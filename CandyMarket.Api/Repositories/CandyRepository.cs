@@ -30,12 +30,12 @@ namespace CandyMarket.Api.Repositories
                 var sql = @"
                     INSERT INTO [Candy]
                         ([Name]
-                        ,[Type]
+                        ,[TypeId]
                         ,[Price])
 	                OUTPUT insterted.*
                     VALUES
                         (@name
-                        ,@type
+                        ,@typeId
                         ,@price)";
                 return db.Execute(sql, newCandy) == 1;
             }
