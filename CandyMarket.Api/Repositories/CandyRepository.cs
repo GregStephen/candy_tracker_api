@@ -22,7 +22,56 @@ namespace CandyMarket.Api.Repositories
                 return candies;
             }
         }
+        public Guid GetCandyIdFromDatabase(Guid candyUserId)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"SELECT CandyId
+                            FROM [CandyUser]
+                            WHERE [Id] = @candyUserId";
+                var parameters = new { candyUserId };
+                var candyIdToReturn = db.QueryFirst<Guid>(sql, parameters);
+                return candyIdToReturn;
+            }
+        }
 
+        public Guid GetUserIdFromDatabase(Guid candyUserId)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"SELECT UserId
+                            FROM [CandyUser]
+                            WHERE [Id] = @candyUserId";
+                var parameters = new { candyUserId };
+                var userIdToReturn = db.QueryFirst<Guid>(sql, parameters);
+                return userIdToReturn;
+            }
+        }
+        public Candy GetCandyById(Guid candyId)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"SELECT *
+                            FROM [Candy]
+                            WHERE [Id] = @candyId";
+                var parameters = new { candyId };
+                var candyToReturn = db.QueryFirst<Candy>(sql, parameters);
+                return candyToReturn;
+            }
+        }
+
+        public User GetUserById(Guid userId)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"SELECT *
+                            FROM [User]
+                            WHERE [Id] = @userId";
+                var parameters = new { userId };
+                var userToReturn = db.QueryFirst<User>(sql, parameters);
+                return userToReturn;
+            }
+        }
         public bool AddCandy(AddCandyDto newCandy)
         {
             using (var db = new SqlConnection(_connectionString))
