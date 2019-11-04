@@ -40,6 +40,12 @@ namespace CandyMarket.Api.Controllers
             _repo.AddCandy(newCandy);
         }
 
+        [HttpPost]
+        public void Buy(Guid userId, Guid candyId)
+        {
+            
+        }
+
         [HttpDelete("{candyIdToDelete}/eat")]
         public void Delete(Guid candyUserIdToDelete)
         {

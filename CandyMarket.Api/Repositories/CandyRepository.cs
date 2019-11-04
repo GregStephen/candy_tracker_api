@@ -22,27 +22,27 @@ namespace CandyMarket.Api.Repositories
                 return candies;
             }
         }
-        public Guid GetCandyIdFromDatabase(Guid candyUserId)
+        public Guid GetCandyIdFromDatabase(Guid userCandyId)
         {
             using (var db = new SqlConnection(_connectionString))
             {
                 var sql = @"SELECT CandyId
-                            FROM [CandyUser]
-                            WHERE [Id] = @candyUserId";
-                var parameters = new { candyUserId };
+                            FROM [UserCandy]
+                            WHERE [Id] = @userCandyId";
+                var parameters = new { userCandyId };
                 var candyIdToReturn = db.QueryFirst<Guid>(sql, parameters);
                 return candyIdToReturn;
             }
         }
 
-        public Guid GetUserIdFromDatabase(Guid candyUserId)
+        public Guid GetUserIdFromDatabase(Guid userCandyId)
         {
             using (var db = new SqlConnection(_connectionString))
             {
                 var sql = @"SELECT UserId
-                            FROM [CandyUser]
-                            WHERE [Id] = @candyUserId";
-                var parameters = new { candyUserId };
+                            FROM [UserCandy]
+                            WHERE [Id] = @userCandyId";
+                var parameters = new { userCandyId };
                 var userIdToReturn = db.QueryFirst<Guid>(sql, parameters);
                 return userIdToReturn;
             }
@@ -81,7 +81,6 @@ namespace CandyMarket.Api.Repositories
                         ([Name]
                         ,[TypeId]
                         ,[Price])
-	                OUTPUT insterted.*
                     VALUES
                         (@name
                         ,@typeId
@@ -90,6 +89,18 @@ namespace CandyMarket.Api.Repositories
             }
         }
 
+        public bool BuyCandy(Guid userIdWhoIsBuying, Guid candyIdGettingBought)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"INSERT INTO [UserCandy]
+                                ([UserId], [CandyId])
+                            VALUES
+                                (@userId, @candyId)";
+                var parameters = new { userId = userIdWhoIsBuying, candyId = candyIdGettingBought };
+                return db.Execute(sql, parameters) == 1;
+            }
+        }
         public bool EatCandy(Guid candyIdToDelete, Guid userIdWhoIsEating)
         {
             using (var db = new SqlConnection(_connectionString))
