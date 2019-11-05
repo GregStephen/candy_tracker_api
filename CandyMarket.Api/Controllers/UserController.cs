@@ -42,7 +42,18 @@ namespace CandyMarket.Api.Controllers
                 return BadRequest();
             }
         }
-
+        [HttpPost("/{userId}/buy/{candyId}")]
+        public IActionResult Buy(Guid userId, Guid candyId)
+        {
+            if(_repo.BuyCandy(userId, candyId))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
         [HttpDelete("{candyIdToDelete}/eat")]
         public void Delete(Guid candyUserIdToDelete)
         {

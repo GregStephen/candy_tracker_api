@@ -29,6 +29,12 @@ namespace CandyMarket.Api.Repositories
                     var parameters = new { userId = user.Id };
                     var candies = db.Query<Candy>(sql, parameters);
                     user.CandyOwned = candies.ToList();
+                    var sql3 = @"SELECT Name
+                             FROM [Type]
+                             WHERE Id = @candyId";
+                    var parameters3 = new { candyId = user.FavoriteTypeOfCandyId };
+                    var favoriteCandyName = db.QueryFirst<string>(sql3, parameters3);
+                    user.FavoriteTypeOfCandyName = favoriteCandyName;
                 }
                 return users;
             }
@@ -49,7 +55,7 @@ namespace CandyMarket.Api.Repositories
                 var candies = db.Query<Candy>(sql2, parameters);
                 user.CandyOwned = candies.ToList();
                 var sql3 = @"SELECT Name
-                             FROM [Candy]
+                             FROM [Type]
                              WHERE Id = @candyId";
                 var parameters3 = new { candyId = user.FavoriteTypeOfCandyId };
                 var favoriteCandyName = db.QueryFirst<string>(sql3, parameters3);
