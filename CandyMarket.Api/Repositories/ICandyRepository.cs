@@ -10,5 +10,6 @@ namespace CandyMarket.Api.Repositories
         IEnumerable<Candy> GetAllCandy();
         Candy GetCandyById(Guid candyId);
         bool AddCandy(AddCandyDto newCandy);
+        bool DeleteCandy(Guid candyIdToDelete);
     }
 }

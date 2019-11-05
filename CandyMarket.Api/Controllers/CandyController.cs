@@ -37,12 +37,22 @@ namespace CandyMarket.Api.Controllers
         [HttpPost]
         public IActionResult Add(AddCandyDto newCandy)
         {
-            _repo.AddCandy(newCandy);
-            return Created($"candy/{newCandy.Name}", newCandy);
+            if (_repo.AddCandy(newCandy))
+            {
+                return Created($"candy/{newCandy.Name}", newCandy);
+            }
+            else
+            {
+                return BadRequest();
+            }
 
         }
 
-
+        [HttpDelete("{candyIdToDelete}")]
+        public void Delete(Guid candyIdToDelete)
+        {
+            _repo.DeleteCandy(candyIdToDelete);
+        }
         //[HttpPost]
         public void Trade()
         {
