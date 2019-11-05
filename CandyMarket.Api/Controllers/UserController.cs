@@ -42,7 +42,7 @@ namespace CandyMarket.Api.Controllers
                 return BadRequest();
             }
         }
-        [HttpPost("/{userId}/buy/{candyId}")]
+        [HttpPost("{userId}/buy/{candyId}")]
         public IActionResult Buy(Guid userId, Guid candyId)
         {
             if(_repo.BuyCandy(userId, candyId))
@@ -54,20 +54,20 @@ namespace CandyMarket.Api.Controllers
                 return BadRequest();
             }
         }
-        [HttpDelete("{candyIdToDelete}/eat")]
-        public void Delete(Guid candyUserIdToDelete)
+        [HttpDelete("eat/{userCandyIdToDelete}")]
+        public void Delete(Guid userCandyIdToDelete)
         {
-            var candyId = _repo.GetCandyIdFromDatabase(candyUserIdToDelete);
-            var userId = _repo.GetUserIdFromDatabase(candyUserIdToDelete);
-            _repo.EatCandy(candyId, userId);
+          /*  var candyId = _repo.GetCandyIdFromDatabase(candyUserIdToDelete);*/
+            var userId = _repo.GetUserIdFromDatabase(userCandyIdToDelete);
+            _repo.EatCandy(userCandyIdToDelete, userId);
         }
 
-        [HttpDelete("{candyIdToDonate}/donate")]
-        public void Donate(Guid candyUserIdToDonate)
+        [HttpDelete("donate/{userCandyIdToDonate}")]
+        public void Donate(Guid userCandyIdToDonate)
         {
             // todo: make this endpoint behave less greedy and more honest
-            var candyId = _repo.GetCandyIdFromDatabase(candyUserIdToDonate);
-            var userId = _repo.GetUserIdFromDatabase(candyUserIdToDonate);
+            var candyId = _repo.GetCandyIdFromDatabase(userCandyIdToDonate);
+            var userId = _repo.GetUserIdFromDatabase(userCandyIdToDonate);
             _repo.DonateCandy(candyId, userId);
         }
     }

@@ -127,18 +127,18 @@ namespace CandyMarket.Api.Repositories
                 return db.Execute(sql, parameters) == 1;
             }
         }
-        public bool EatCandy(Guid candyIdToDelete, Guid userIdWhoIsEating)
+        public bool EatCandy(Guid userCandyIdToDelete, Guid userIdWhoIsEating)
         {
             using (var db = new SqlConnection(_connectionString))
             {
                 var sql = @"DELETE
                             FROM UserCandy
-                            WHERE ([CandyId] = @CandyId AND [UserId] = @UserId)";
+                            WHERE @UserCandyId = id";
                 var sql2 = @"UPDATE [User]
                             SET AmountOfCandyEaten += 1
                             WHERE Id = @UserId";
                 db.Execute(sql2, new { UserId = userIdWhoIsEating });
-                return db.Execute(sql, new { CandyId = candyIdToDelete, UserId = userIdWhoIsEating }) == 1;
+                return db.Execute(sql, new { UserCandyId = userCandyIdToDelete, UserId = userIdWhoIsEating }) == 1;
             }
         }
         public User FavoriteCandy(Guid candyId)
