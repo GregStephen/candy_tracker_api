@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Http;
 using CandyMarket.Api.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using CandyMarket.Api.DataModels;
 
 namespace CandyMarket.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("user")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -23,10 +24,23 @@ namespace CandyMarket.Api.Controllers
             _repo = repo;
         }
 
-        [HttpPost]
-        public void Add(AddUserDto newUser)
+        [HttpGet]
+        public IEnumerable<User> GetAll()
         {
-            _repo.AddUser(newUser);
+            return _repo.GetAllUsers();
+        }
+
+        [HttpPost]
+        public IActionResult Add(AddUserDto newUser)
+        {
+            if (_repo.AddUser(newUser))
+            {
+                return Created($"user/{newUser.FirstName}", newUser);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         [HttpDelete("{candyIdToDelete}/eat")]

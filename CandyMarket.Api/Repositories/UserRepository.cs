@@ -12,6 +12,27 @@ namespace CandyMarket.Api.Repositories
     public class UserRepository : IUserRepository
     {
         string _connectionString = "Server=localhost;Database=CandyMarket;Trusted_Connection=True;";
+        public IEnumerable<User> GetAllUsers()
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var users = db.Query<User>
+                   (
+                   @"SELECT * 
+                      FROM [User]"
+                   ).ToList();
+                foreach (User user in users)
+                {
+                    var sql = @"SELECT *
+                             FROM [UserCandy]
+                             WHERE UserId = @userId";
+                    var parameters = new { userId = user.Id };
+                    var candies = db.Query<Candy>(sql, parameters);
+                    user.CandyOwned = candies.ToList();
+                }
+                return users;
+            }
+        }
 
         public User GetUser(Guid userId)
         {
@@ -27,6 +48,12 @@ namespace CandyMarket.Api.Repositories
                              WHERE UserId = @userId";
                 var candies = db.Query<Candy>(sql2, parameters);
                 user.CandyOwned = candies.ToList();
+                var sql3 = @"SELECT Name
+                             FROM [Candy]
+                             WHERE Id = @candyId";
+                var parameters3 = new { candyId = user.FavoriteTypeOfCandyId };
+                var favoriteCandyName = db.QueryFirst<string>(sql3, parameters3);
+                user.FavoriteTypeOfCandyName = favoriteCandyName;
                 return user;
             }
         }

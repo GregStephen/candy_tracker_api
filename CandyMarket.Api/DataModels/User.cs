@@ -11,6 +11,7 @@ namespace CandyMarket.Api.DataModels
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int FavoriteTypeOfCandyId { get; set; }
+        public string FavoriteTypeOfCandyName { get; set; }
         public int AmountOfCandyEaten { get; set; }
         public int AmountOfCandyDonated { get; set; }
         public List<Candy> CandyOwned { get; set; }
