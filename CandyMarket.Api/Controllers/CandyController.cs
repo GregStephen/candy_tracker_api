@@ -48,6 +48,21 @@ namespace CandyMarket.Api.Controllers
 
         }
 
+        [HttpPut("{id}")]
+        public IActionResult UpdateCandy(UpdateCandyDto updatedCandyCommand, Guid id)
+        {
+
+            var updatedCandy = new Candy()
+            {
+                Name = updatedCandyCommand.Name,
+                Price = updatedCandyCommand.Price,
+                TypeId = updatedCandyCommand.TypeId,
+                Size = updatedCandyCommand.Size
+            };
+
+            var candyThatGotUpdated = _repo.UpdateCandy(id, updatedCandy);
+            return Ok(candyThatGotUpdated);
+        }
         [HttpDelete("{candyIdToDelete}")]
         public void Delete(Guid candyIdToDelete)
         {

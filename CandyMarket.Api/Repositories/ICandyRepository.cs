@@ -11,5 +11,6 @@ namespace CandyMarket.Api.Repositories
         Candy GetCandyById(Guid candyId);
         bool AddCandy(AddCandyDto newCandy);
         bool DeleteCandy(Guid candyIdToDelete);
+        Candy UpdateCandy(Guid candyIdToUpdate, Candy updatedCandy);
     }
 }
