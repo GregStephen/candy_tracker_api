@@ -22,6 +22,12 @@ namespace CandyMarket.Api.Repositories
                             WHERE [Id] = @userId";
                 var parameters = new { userId };
                 var user = db.QueryFirst<User>(sql, parameters);
+                var sql2 = @"SELECT *
+                             FROM [UserCandy]
+                             WHERE UserId = @userId";
+                var candies = db.Query<Candy>(sql2, parameters);
+                user.CandyOwned = candies.ToList();
+                return user;
             }
         }
         public Guid GetUserIdFromDatabase(Guid userCandyId)
@@ -79,6 +85,10 @@ namespace CandyMarket.Api.Repositories
                 var sql = @"DELETE
                             FROM UserCandy
                             WHERE ([CandyId] = @CandyId AND [UserId] = @UserId)";
+                var sql2 = @"UPDATE [User]
+                            SET AmountOfCandyEaten += 1
+                            WHERE Id = @UserId";
+                db.Execute(sql2, new { UserId = userIdWhoIsEating });
                 return db.Execute(sql, new { CandyId = candyIdToDelete, UserId = userIdWhoIsEating }) == 1;
             }
         }
@@ -105,6 +115,10 @@ namespace CandyMarket.Api.Repositories
                             ([UserId], [CandyId])
                             VALUES
                                 (@userId, @candyId)";
+                var sql2 = @"UPDATE [User]
+                            SET AmountOfCandyDonated += 1
+                            WHERE Id = @UserId";
+                db.Execute(sql2, new { UserId = userIdWhoIsDonating });
                 return db.Execute(sql, new { CandyId = candyIdToDonate, UserId = userToDonate.Id }) == 1;
             }
         }
