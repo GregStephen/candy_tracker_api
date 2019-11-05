@@ -9,13 +9,6 @@ namespace CandyMarket.Api.Repositories
     {
         IEnumerable<Candy> GetAllCandy();
         Candy GetCandyById(Guid candyId);
-        User GetUserById(Guid userId);
-        Guid GetCandyIdFromDatabase(Guid userCandyId);
-
-        Guid GetUserIdFromDatabase(Guid userCandyId);
         bool AddCandy(AddCandyDto newCandy);
-        bool EatCandy(Guid candyIdToDelete, Guid userIdWhoIsEating);
-        User FavoriteCandy(Guid candyId);
-        bool DonateCandy(Guid candyIdToDonate, Guid userIdWhoIsDonating);
     }
 }
