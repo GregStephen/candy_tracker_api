@@ -6,14 +6,11 @@ using System.Threading.Tasks;
 
 namespace CandyMarket.Api.Dtos
 {
-    public class AddUserDtos
+    public class AddUserDto
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int FavoriteTypeOfCandy { get; set; }
-        public int AmountOfCandyEaten { get; set; }
-        public int AmountOfCandyDonated { get; set; }
-        public List<Candy> CandyOwned { get; set; }
+        public int FavoriteTypeOfCandyId { get; set; }
 
     }
 }

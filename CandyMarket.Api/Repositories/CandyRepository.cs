@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using Dapper;
 using CandyMarket.Api.DataModels;
 using CandyMarket.Api.Dtos;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CandyMarket.Api.Repositories
 {
@@ -50,6 +51,7 @@ namespace CandyMarket.Api.Repositories
                         (@name
                         ,@typeId
                         ,@price)";
+
                 return db.Execute(sql, newCandy) == 1;
             }
         }

@@ -8,6 +8,7 @@ namespace CandyMarket.Api.Repositories
     public interface IUserRepository
     {
         User GetUser(Guid userId);
+        bool AddUser(AddUserDto newUser);
         Guid GetUserIdFromDatabase(Guid userCandyId);
         Guid GetCandyIdFromDatabase(Guid userCandyId);
         bool BuyCandy(Guid userIdWhoIsBuying, Guid candyIdGettingBought);

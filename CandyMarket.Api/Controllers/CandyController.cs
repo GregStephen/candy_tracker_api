@@ -35,15 +35,11 @@ namespace CandyMarket.Api.Controllers
         }
 
         [HttpPost]
-        public void Add(AddCandyDto newCandy)
+        public IActionResult Add(AddCandyDto newCandy)
         {
             _repo.AddCandy(newCandy);
-        }
+            return Created($"candy/{newCandy.Name}", newCandy);
 
-        [HttpPost]
-        public void Buy(Guid userId, Guid candyId)
-        {
-            
         }
 
 

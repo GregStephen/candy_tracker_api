@@ -30,6 +30,22 @@ namespace CandyMarket.Api.Repositories
                 return user;
             }
         }
+        public bool AddUser(AddUserDto newUser)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"
+                    INSERT INTO [User]
+                        ([FirstName]
+                        ,[LastName]
+                        ,[FavoriteTypeOfCandyId])
+                    VALUES
+                        (@FirstName
+                        ,@LastName
+                        ,@FavoriteTypeOfCandyId)";
+                return db.Execute(sql, newUser) == 1;
+            }
+        }
         public Guid GetUserIdFromDatabase(Guid userCandyId)
         {
             using (var db = new SqlConnection(_connectionString))

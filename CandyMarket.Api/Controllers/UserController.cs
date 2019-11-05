@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CandyMarket.Api.Repositories;
 using Microsoft.AspNetCore.Http;
+using CandyMarket.Api.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -21,6 +22,13 @@ namespace CandyMarket.Api.Controllers
             _logger = logger;
             _repo = repo;
         }
+
+        [HttpPost]
+        public void Add(AddUserDto newUser)
+        {
+            _repo.AddUser(newUser);
+        }
+
         [HttpDelete("{candyIdToDelete}/eat")]
         public void Delete(Guid candyUserIdToDelete)
         {
