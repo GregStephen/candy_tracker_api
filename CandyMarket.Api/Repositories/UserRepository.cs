@@ -128,29 +128,41 @@ namespace CandyMarket.Api.Repositories
                 return db.Execute(sql, parameters) == 1;
             }
         }
-        public bool EatCandy(Guid userCandyIdToDelete, Guid userIdWhoIsEating)
+        public bool DeleteUserCandyEntry(Guid userCandyIdToDelete)
         {
             using (var db = new SqlConnection(_connectionString))
             {
                 var sql = @"DELETE
                             FROM UserCandy
-                            WHERE @UserCandyId = id";
-                var sql2 = @"UPDATE [User]
-                            SET AmountOfCandyEaten += 1
-                            WHERE Id = @UserId";
-                db.Execute(sql2, new { UserId = userIdWhoIsEating });
-                return db.Execute(sql, new { UserCandyId = userCandyIdToDelete, UserId = userIdWhoIsEating }) == 1;
+                            WHERE Id = @UserCandyId";
+                return db.Execute(sql, new { userCandyId = userCandyIdToDelete }) == 1;
             }
         }
-        public User WhoToDonateTo(Guid candyId)
+        public bool EatCandy(Guid userCandyIdToDelete)
         {
             using (var db = new SqlConnection(_connectionString))
             {
-                var sql = @"SELECT * 
+                var userIdWhoIsEating = GetUserIdFromDatabase(userCandyIdToDelete);
+                DeleteUserCandyEntry(userCandyIdToDelete);
+                var sql = @"UPDATE [User]
+                            SET AmountOfCandyEaten += 1
+                            WHERE Id = @UserId";
+                return db.Execute(sql, new { UserId = userIdWhoIsEating }) == 1;
+            }
+        }
+        public User WhoToDonateTo(Guid candyId, Guid userIdWhoIsDonating)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"SELECT TypeId
+                             FROM [Candy]
+                             WHERE [Id] = @candyId";
+                var candyTypeId = db.QueryFirst<int>(sql, new { CandyId = candyId });
+                var sql2 = @"SELECT * 
                             FROM [User]
-                            WHERE [FavoriteTypeOfCandyId] = @candyId";
-                var parameters = new { CandyId = candyId };
-                var userToDonateTo = db.QueryFirst<User>(sql, parameters);
+                            WHERE ([FavoriteTypeOfCandyId] = @candyTypeId AND [Id] != @userId)";
+                var parameters = new { CandyTypeId = candyTypeId, UserId = userIdWhoIsDonating };
+                var userToDonateTo = db.QueryFirstOrDefault<User>(sql2, parameters);
                 /* If their is no user who has that for their favorite candy
                     Then it looks for the user with the least amount of candy */
                 if (userToDonateTo == null)
@@ -163,12 +175,14 @@ namespace CandyMarket.Api.Repositories
             }
 
         }
-        public bool DonateCandy(Guid candyIdToDonate, Guid userIdWhoIsDonating)
+        public bool DonateCandy(Guid userCandyIdToDonate)
         {
             using (var db = new SqlConnection(_connectionString))
             {
-                EatCandy(candyIdToDonate, userIdWhoIsDonating);
-                var userToDonate = WhoToDonateTo(candyIdToDonate);
+                var candyIdToDonate = GetCandyIdFromDatabase(userCandyIdToDonate);
+                var userIdWhoIsDonating = GetUserIdFromDatabase(userCandyIdToDonate);
+                var userToDonate = WhoToDonateTo(candyIdToDonate, userIdWhoIsDonating);
+                DeleteUserCandyEntry(userCandyIdToDonate);
                 var sql = @"INSERT INTO [UserCandy]
                             ([UserId], [CandyId])
                             VALUES

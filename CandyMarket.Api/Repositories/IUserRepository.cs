@@ -13,9 +13,10 @@ namespace CandyMarket.Api.Repositories
         Guid GetUserIdFromDatabase(Guid userCandyId);
         Guid GetCandyIdFromDatabase(Guid userCandyId);
         bool BuyCandy(Guid userIdWhoIsBuying, Guid candyIdGettingBought);
-        bool EatCandy(Guid candyIdToDelete, Guid userIdWhoIsEating);
-        User WhoToDonateTo(Guid candyId);
-        bool DonateCandy(Guid candyIdToDonate, Guid userIdWhoIsDonating);
+        bool DeleteUserCandyEntry(Guid userCandyIdToDelete);
+        bool EatCandy(Guid candyIdToDelete);
+        User WhoToDonateTo(Guid candyId, Guid userIdWhoIsDonating);
+        bool DonateCandy(Guid userCandyIdToDelete);
 
         User GetUserById(Guid userId);
     }
