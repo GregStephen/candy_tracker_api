@@ -23,8 +23,9 @@ namespace CandyMarket.Api.Repositories
                    ).ToList();
                 foreach (User user in users)
                 {
-                    var sql = @"SELECT *
-                             FROM [UserCandy]
+                    var sql = @"SELECT c.Id, c.Name, c.Price, c.TypeId, c.Size
+                             FROM [UserCandy] uc
+                                JOIN [Candy] c ON uc.CandyId = c.Id
                              WHERE UserId = @userId";
                     var parameters = new { userId = user.Id };
                     var candies = db.Query<Candy>(sql, parameters);
@@ -141,7 +142,7 @@ namespace CandyMarket.Api.Repositories
                 return db.Execute(sql, new { UserCandyId = userCandyIdToDelete, UserId = userIdWhoIsEating }) == 1;
             }
         }
-        public User FavoriteCandy(Guid candyId)
+        public User WhoToDonateTo(Guid candyId)
         {
             using (var db = new SqlConnection(_connectionString))
             {
@@ -150,6 +151,14 @@ namespace CandyMarket.Api.Repositories
                             WHERE [FavoriteTypeOfCandyId] = @candyId";
                 var parameters = new { CandyId = candyId };
                 var userToDonateTo = db.QueryFirst<User>(sql, parameters);
+                /* If their is no user who has that for their favorite candy
+                    Then it looks for the user with the least amount of candy */
+                if (userToDonateTo == null)
+                {
+                    var users = GetAllUsers().ToList();
+                    var user = users.OrderBy(user => user.CandyOwned.Count()).First<User>();
+                    return user;
+                }
                 return userToDonateTo;
             }
 
@@ -159,7 +168,7 @@ namespace CandyMarket.Api.Repositories
             using (var db = new SqlConnection(_connectionString))
             {
                 EatCandy(candyIdToDonate, userIdWhoIsDonating);
-                var userToDonate = FavoriteCandy(candyIdToDonate);
+                var userToDonate = WhoToDonateTo(candyIdToDonate);
                 var sql = @"INSERT INTO [UserCandy]
                             ([UserId], [CandyId])
                             VALUES
