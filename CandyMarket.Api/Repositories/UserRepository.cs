@@ -72,10 +72,14 @@ namespace CandyMarket.Api.Repositories
                     INSERT INTO [User]
                         ([FirstName]
                         ,[LastName]
+                        ,[Email]
+                        ,[Password]
                         ,[FavoriteTypeOfCandyId])
                     VALUES
                         (@FirstName
                         ,@LastName
+                        ,@Email
+                        ,@Password
                         ,@FavoriteTypeOfCandyId)";
                 return db.Execute(sql, newUser) == 1;
             }
@@ -112,6 +116,19 @@ namespace CandyMarket.Api.Repositories
                             FROM [User]
                             WHERE [Id] = @userId";
                 var parameters = new { userId };
+                var userToReturn = db.QueryFirst<User>(sql, parameters);
+                return userToReturn;
+            }
+        }
+
+        public User GetUserByEmailAndPassword(string email, string password)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"SELECT *
+                            FROM [User]
+                            WHERE ([Password] = @password AND [Email] = @email)";
+                var parameters = new { email, password };
                 var userToReturn = db.QueryFirst<User>(sql, parameters);
                 return userToReturn;
             }

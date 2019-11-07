@@ -34,6 +34,12 @@ namespace CandyMarket.Api.Controllers
         {
             return _repo.GetAllUsers().FirstOrDefault(user => user.Id == userId);
         }
+
+        [HttpGet("{email}/p/{password}")]
+        public User Get(string email, string password)
+        {
+            return _repo.GetUserByEmailAndPassword(email, password);
+        }
         [HttpPost]
         public IActionResult Add(AddUserDto newUser)
         {

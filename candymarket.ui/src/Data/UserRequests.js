@@ -13,8 +13,13 @@ const getUserById = uid => new Promise((resolve, reject) => {
         .catch(err => reject(err));
 });
 
+const logInUser = (email, password) => new Promise((resolve, reject) => {
+    axios.get(`${baseUrl}/user/${email}/p/${password}`)
+        .then(result => resolve(result.data))
+        .catch(err => reject(err));
+})
 const postUser = userObj => axios.post(`${baseUrl}/user/`, userObj);
 
 
 
-export default {getAllUsers, getUserById, postUser};
+export default {getAllUsers, getUserById, postUser, logInUser};

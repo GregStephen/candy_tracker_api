@@ -2,16 +2,12 @@ import React from 'react';
 import {
   BrowserRouter as Router, Route, Redirect, Switch,
 } from 'react-router-dom';
-import MyNavbar from '../components/MyNavbar/MyNavbar';
-import Auth from '../components/Auth/Auth';
+import MyNavbar from '../Components/MyNavbar/MyNavbar';
+import Auth from '../Components/Auth/Auth';
 import Home from '../Components/Home/Home';
-import firebase from 'firebase/app';
-import 'firebase/auth';
+import User from '../Components/User/User';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
-import fbConnect from '../helpers/data/fbConnection';
-
-fbConnect();
 
 const PublicRoute = ({ component: Component, authed, ...rest }) => {
   // props contains Location, Match, and History
@@ -29,44 +25,26 @@ class App extends React.Component {
   state = {
     authed: false,
     userObj: {
-      name: 'Greg',
+      firstName: 'DOPE',
     }
   };
 
-  getUser = () => {
-    if (this.state.authed) {
-      const firebaseId = firebase.auth().currentUser.uid;
-      userData.getUserByUID(firebaseId)
-        .then(userObj => this.setState({ userObj }))
-        .catch(err => console.error('trouble fetching user data', err));
-    }
-  }
-
-  createUser = (saveMe) => {
+ /* createUser = (saveMe) => {
     userData.postUser(saveMe)
       .then(() => {
         this.getUser();
       })
       .catch();
   }
-
-  componentDidMount() {
-    this.removeListener = firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        userData.getUserByID(user.uid)
-          .then((userObj) => {
-            this.setState({ userObj });
-            this.setState({ authed: true });
-          })
-          .catch(err => console.error('trouble fetching user data', err));
-      } else {
-        this.setState({ authed: false });
-      }
-    });
+*/
+  userLoggedIn = (user) => {
+    console.log(user);
+    this.setState({
+      authed : true,
+      userObj : user})
   }
 
-  componentWillUnmount() {
-    this.removeListener();
+  componentDidMount() {
   }
 
 
@@ -75,10 +53,10 @@ class App extends React.Component {
     return (
       <div className="App">
         <Router>
-          <MyNavbar authed={ authed } userObj={ userObj } getUser={ this.getUser }/>
+          <MyNavbar authed={ authed } userObj={ userObj }/>
             <Switch>
-              <PublicRoute path='/auth' component={Auth} authed={authed}/>
-              <PrivateRoute path="/" exact component={ Home } authed={ authed } userObj={ userObj }/>
+              <PublicRoute path='/auth' component={Auth} authed={authed} userLoggedIn={ this.userLoggedIn }/>
+              <PrivateRoute path="/home" exact component={ Home } authed={ authed } userObj={ userObj }/>
               <PrivateRoute path='/user/:id' component={ User } authed={ authed } userObj={ userObj }/>
               <Redirect from='*' to='/auth'/>
             </Switch>

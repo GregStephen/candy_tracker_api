@@ -1,7 +1,5 @@
 import React from 'react';
 import { NavLink as RRNavLink, Link } from 'react-router-dom';
-import firebase from 'firebase/app';
-import 'firebase/auth';
 import {
   Collapse,
   Navbar,
@@ -35,29 +33,22 @@ class MyNavbar extends React.Component {
 
   logMeOut = (e) => {
     e.preventDefault();
-    firebase.auth().signOut();
+    console.error('logged out');
+    
   };
 
   render() {
     const { authed, userObj, getUser } = this.props;
     const buildNavbar = () => {
-      let userLink = '';
-      if (userObj !== undefined) {
-        userLink = `/user/${userObj.id}`;
-      }
-      if (userObj === 'undefined' || userObj === undefined) {
-        getUser();
-      }
-      if (authed && userObj !== undefined) {
         return (
           <Nav className="ml-auto" navbar>
             <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret className="navbar-user-button">
-                <img className="navbar-user-image" src={userObj.imageUrl} alt="the user"></img>
+              <DropdownToggle nav caret>
+                Yo Wassup
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem>
-                  <Link to={userLink}>Account Settings</Link>
+                  Account Settings
                 </DropdownItem>
                 <DropdownItem onClick={this.logMeOut}>
                     Log Out
@@ -66,13 +57,12 @@ class MyNavbar extends React.Component {
             </UncontrolledDropdown>
           </Nav>
         );
-      } return ('');
     };
 
     return (
       <div className="MyNavbar">
         <Navbar dark color="dark" expand="md">
-          <NavbarBrand className="navbar-brand" tag={RRNavLink} to='/home'>PoopScoop</NavbarBrand>
+          <NavbarBrand className="navbar-brand" tag={RRNavLink} to='/home'>CandyMarket</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             {buildNavbar()}

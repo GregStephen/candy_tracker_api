@@ -9,6 +9,7 @@ namespace CandyMarket.Api.Repositories
     {
         IEnumerable<User> GetAllUsers();
         User GetUser(Guid userId);
+        User GetUserByEmailAndPassword(string email, string password);
         bool AddUser(AddUserDto newUser);
         Guid GetUserIdFromDatabase(Guid userCandyId);
         Guid GetCandyIdFromDatabase(Guid userCandyId);
