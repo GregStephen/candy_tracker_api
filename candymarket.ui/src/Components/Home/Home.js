@@ -5,14 +5,14 @@ import './Home.scss';
 class Home extends Component {
 
   render () {
-    const testText = this.props.testText;
+    const userObj = this.props.userObj;
     return (
       <div className="Home">
+        <h1>Welcome {userObj.firstName}!</h1>
         <button className="btn btn-danger">Buy Some Candy</button>
         <button className="btn btn-danger">Donate Some Candy</button>
         <button className="btn btn-danger">Eat Some Candy</button>
           <CandyList/>
-          <h1 className="testTarget">{testText}</h1>
       </div>
     );
   }

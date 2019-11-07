@@ -62,7 +62,7 @@ class MyNavbar extends React.Component {
     return (
       <div className="MyNavbar">
         <Navbar dark color="dark" expand="md">
-          <NavbarBrand className="navbar-brand" tag={RRNavLink} to='/home'>CandyMarket</NavbarBrand>
+          <NavbarBrand className="navbar-brand" tag={RRNavLink} to='/home'>Candy Market</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             {buildNavbar()}
