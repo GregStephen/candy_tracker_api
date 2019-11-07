@@ -1,0 +1,45 @@
+.Auth {
+    display: block;
+    .welcome-div {
+      margin-top: 2em;
+      .welcome-header {
+        font-size: 3.25em;
+        margin-bottom: .25em;
+        font-family: 'Nunito', sans-serif;
+        font-weight: 800;
+        @media (min-width: 768px) {
+          font-size: 4em;
+        }
+      }
+      .bold {
+        font-weight: 800;
+      }
+    }
+    .sign-in-form {
+      margin-top: 5em;
+      margin-bottom: 5em;
+      border: 2px solid saddlebrown;
+      background-color: burlywood;
+      padding: 2em;
+      height: 28em;
+      .sign-in-header {
+        margin-bottom: 1em;
+      }
+      .forgotPasswordBtn {
+        background:none;
+        color:inherit;
+        border:none; 
+        padding:0!important;
+        font: inherit;
+        cursor: pointer;
+      }
+      .forgotPasswordBtn:hover {
+        color: blue;
+        text-decoration: underline;
+      }
+      .error {
+        margin-top: 1em;
+        color: red;
+      }
+    }
+  }

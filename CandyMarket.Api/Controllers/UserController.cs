@@ -29,7 +29,11 @@ namespace CandyMarket.Api.Controllers
         {
             return _repo.GetAllUsers();
         }
-
+        [HttpGet("{userId}")]
+        public User Get(Guid userId)
+        {
+            return _repo.GetAllUsers().FirstOrDefault(user => user.Id == userId);
+        }
         [HttpPost]
         public IActionResult Add(AddUserDto newUser)
         {

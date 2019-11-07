@@ -4,6 +4,7 @@ using System.Linq;
 using CandyMarket.Api.DataModels;
 using CandyMarket.Api.Dtos;
 using CandyMarket.Api.Repositories;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -11,6 +12,7 @@ namespace CandyMarket.Api.Controllers
 {
     [ApiController]
     [Route("candy")]
+    [DisableCors]
     public class CandyController : ControllerBase
     {
         private readonly ILogger<CandyController> _logger;
