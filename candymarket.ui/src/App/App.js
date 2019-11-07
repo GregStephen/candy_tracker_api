@@ -6,6 +6,7 @@ import MyNavbar from '../Components/MyNavbar/MyNavbar';
 import Auth from '../Components/Auth/Auth';
 import Home from '../Components/Home/Home';
 import User from '../Components/User/User';
+import NewUser from '../Components/NewUser/NewUser';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
 
@@ -56,6 +57,7 @@ class App extends React.Component {
           <MyNavbar authed={ authed } userObj={ userObj }/>
             <Switch>
               <PublicRoute path='/auth' component={Auth} authed={authed} userLoggedIn={ this.userLoggedIn }/>
+              <Route path='/new_user' component={NewUser} authed={authed}/>
               <PrivateRoute path="/home" exact component={ Home } authed={ authed } userObj={ userObj }/>
               <PrivateRoute path='/user/:id' component={ User } authed={ authed } userObj={ userObj }/>
               <Redirect from='*' to='/auth'/>

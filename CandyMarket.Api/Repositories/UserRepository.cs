@@ -12,6 +12,32 @@ namespace CandyMarket.Api.Repositories
     public class UserRepository : IUserRepository
     {
         string _connectionString = "Server=localhost;Database=CandyMarket;Trusted_Connection=True;";
+
+        public string FetchFavoriteCandyName(User user)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql3 = @"SELECT Name
+                             FROM [Type]
+                             WHERE Id = @candyId";
+                var parameters3 = new { candyId = user.FavoriteTypeOfCandyId };
+                var favoriteCandyName = db.QueryFirst<string>(sql3, parameters3);
+                return favoriteCandyName;
+            }
+        }
+        public List<Candy> FetchUsersCandyList(User user)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"SELECT c.Id, c.Name, c.Price, c.TypeId, c.Size
+                             FROM [UserCandy] uc
+                                JOIN [Candy] c ON uc.CandyId = c.Id
+                             WHERE UserId = @userId";
+                var parameters = new { userId = user.Id };
+                var candies = db.Query<Candy>(sql, parameters).ToList();
+                return candies;
+            }
+        }
         public IEnumerable<User> GetAllUsers()
         {
             using (var db = new SqlConnection(_connectionString))
@@ -23,18 +49,9 @@ namespace CandyMarket.Api.Repositories
                    ).ToList();
                 foreach (User user in users)
                 {
-                    var sql = @"SELECT c.Id, c.Name, c.Price, c.TypeId, c.Size
-                             FROM [UserCandy] uc
-                                JOIN [Candy] c ON uc.CandyId = c.Id
-                             WHERE UserId = @userId";
-                    var parameters = new { userId = user.Id };
-                    var candies = db.Query<Candy>(sql, parameters);
-                    user.CandyOwned = candies.ToList();
-                    var sql3 = @"SELECT Name
-                             FROM [Type]
-                             WHERE Id = @candyId";
-                    var parameters3 = new { candyId = user.FavoriteTypeOfCandyId };
-                    var favoriteCandyName = db.QueryFirst<string>(sql3, parameters3);
+                    var candies = FetchUsersCandyList(user);
+                    user.CandyOwned = candies;
+                    var favoriteCandyName = FetchFavoriteCandyName(user);
                     user.FavoriteTypeOfCandyName = favoriteCandyName;
                 }
                 return users;
@@ -50,16 +67,9 @@ namespace CandyMarket.Api.Repositories
                             WHERE [Id] = @userId";
                 var parameters = new { userId };
                 var user = db.QueryFirst<User>(sql, parameters);
-                var sql2 = @"SELECT *
-                             FROM [UserCandy]
-                             WHERE UserId = @userId";
-                var candies = db.Query<Candy>(sql2, parameters);
-                user.CandyOwned = candies.ToList();
-                var sql3 = @"SELECT Name
-                             FROM [Type]
-                             WHERE Id = @candyId";
-                var parameters3 = new { candyId = user.FavoriteTypeOfCandyId };
-                var favoriteCandyName = db.QueryFirst<string>(sql3, parameters3);
+                var candies = FetchUsersCandyList(user);
+                user.CandyOwned = candies;
+                var favoriteCandyName = FetchFavoriteCandyName(user);
                 user.FavoriteTypeOfCandyName = favoriteCandyName;
                 return user;
             }
@@ -130,6 +140,10 @@ namespace CandyMarket.Api.Repositories
                             WHERE ([Password] = @password AND [Email] = @email)";
                 var parameters = new { email, password };
                 var userToReturn = db.QueryFirst<User>(sql, parameters);
+                var candies = FetchUsersCandyList(userToReturn);
+                userToReturn.CandyOwned = candies;
+                var favoriteCandyName = FetchFavoriteCandyName(userToReturn);
+                userToReturn.FavoriteTypeOfCandyName = favoriteCandyName;
                 return userToReturn;
             }
         }
