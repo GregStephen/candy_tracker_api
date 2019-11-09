@@ -81,7 +81,7 @@ class NewUser extends React.Component {
             className="form-control"
             id="email"
             value={newUser.email}
-            onChange={this.handleChange}
+            onChange={this.formFieldStringState}
             placeholder="Greg@CandyMarket.com"
             required
             />
@@ -92,8 +92,8 @@ class NewUser extends React.Component {
             type="password"
             className="form-control"
             id="password"
-            value={newUser.passwordpassword}
-            onChange={this.handleChange}
+            value={newUser.password}
+            onChange={this.formFieldStringState}
             required
             />
           </div>
