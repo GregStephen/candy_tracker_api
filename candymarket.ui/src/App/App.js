@@ -9,6 +9,7 @@ import User from '../Components/User/User';
 import NewUser from '../Components/NewUser/NewUser';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
+import UserRequests from '../Data/UserRequests';
 
 const PublicRoute = ({ component: Component, authed, ...rest }) => {
   // props contains Location, Match, and History
@@ -30,14 +31,6 @@ class App extends React.Component {
     }
   };
 
- /* createUser = (saveMe) => {
-    userData.postUser(saveMe)
-      .then(() => {
-        this.getUser();
-      })
-      .catch();
-  }
-*/
   userLoggedIn = (user) => {
     console.log(user);
     this.setState({
@@ -56,8 +49,8 @@ class App extends React.Component {
         <Router>
           <MyNavbar authed={ authed } userObj={ userObj }/>
             <Switch>
-              <PublicRoute path='/auth' component={Auth} authed={authed} userLoggedIn={ this.userLoggedIn }/>
-              <Route path='/new-user' component={NewUser} authed={authed}/>
+              <PublicRoute path='/auth' component={ Auth } authed={ authed } userLoggedIn={ this.userLoggedIn }/>
+              <PublicRoute path='/new-user' component={ NewUser } authed={ authed } userLoggedIn = { this.userLoggedIn }/>
               <PrivateRoute path="/home" exact component={ Home } authed={ authed } userObj={ userObj }/>
               <PrivateRoute path='/user/:id' component={ User } authed={ authed } userObj={ userObj }/>
               <Redirect from='*' to='/auth'/>

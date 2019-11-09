@@ -3,13 +3,14 @@ import {
     Form, Label, Input, Button,
 } from 'reactstrap';
 import candyTypeData from '../../Data/CandyTypeRequests';
+import UserRequests from '../../Data/UserRequests';
 
 const defaultUser = {
-    firstName: '',
-    lastName: '',
-    favoriteTypeOfCandyId: '',
-    password: '',
-    email: '',
+    FirstName: '',
+    LastName: '',
+    FavoriteTypeOfCandyId: 0,
+    Password: '',
+    Email: '',
 };
 
 class NewUser extends React.Component {
@@ -24,9 +25,20 @@ class NewUser extends React.Component {
           .then(candyList => this.setState({ candyList }))
           .catch(err => console.error('trouble getting candy', err));
       }
+
     formSubmit = (e) => {
         e.preventDefault();
         const { newUser } = this.state;
+        UserRequests.postUser(newUser)
+          .then(() => {
+            var Password = newUser.Password;
+            var Email = newUser.Email;
+            UserRequests.logInUser(Email, Password)
+              .then((user) => {
+                this.props.userLoggedIn(user)
+              });
+            })
+          .catch();
         console.error(newUser);
     }
 
@@ -35,6 +47,12 @@ class NewUser extends React.Component {
         tempUser[e.target.id] = e.target.value;
         this.setState({ newUser: tempUser });
     }
+    candySelector = (e) => {
+      const tempUser = { ...this.state.newUser };
+      tempUser[e.target.id] = parseInt(e.target.value, 10);
+      this.setState({ newUser : tempUser });
+    }
+
     candyList = () => {
         const { candyList } = this.state;
         const options = candyList.map(candy => (
@@ -51,61 +69,61 @@ class NewUser extends React.Component {
                 <h1 className="join-header">JOIN US!</h1>
         <Form className="row justify-content-center new-user-form" onSubmit={this.formSubmit}>
           <div className="form-group col-11 col-md-9 col-lg-7">
-            <Label for="firstName">First Name</Label>
+            <Label for="FirstName">First Name</Label>
             <Input
             type="text"
             className="form-control"
-            id="firstName"
-            value={newUser.firstName}
+            id="FirstName"
+            value={newUser.FirstName}
             onChange={this.formFieldStringState}
             placeholder="Greg"
             required
             />
           </div>
           <div className="form-group col-11 col-md-9 col-lg-7">
-            <Label for="lastName">Last Name</Label>
+            <Label for="LastName">Last Name</Label>
             <Input
             type="text"
             className="form-control"
-            id="lastName"
-            value={newUser.lastName}
+            id="LastName"
+            value={newUser.LastName}
             onChange={this.formFieldStringState}
             placeholder="Stephen"
             required
             />
           </div>
           <div className="form-group col-11 col-md-9 col-lg-7">
-            <Label for="email">Email</Label>
+            <Label for="Email">Email</Label>
             <Input
-            type="email"
+            type="Email"
             className="form-control"
-            id="email"
-            value={newUser.email}
+            id="Email"
+            value={newUser.Email}
             onChange={this.formFieldStringState}
             placeholder="Greg@CandyMarket.com"
             required
             />
           </div>
           <div className="form-group col-11 col-md-9 col-lg-7">
-            <Label for="password">Password</Label>
+            <Label for="Password">Password</Label>
             <Input
-            type="password"
+            type="Password"
             className="form-control"
-            id="password"
-            value={newUser.password}
+            id="Password"
+            value={newUser.Password}
             onChange={this.formFieldStringState}
             required
             />
           </div>
           <div className="favCandy col-12 row justify-content-center">
             <div className="form-group col-3 col-md-2">
-              <Label for="favortieTypeOfCandyId">Favorite Type of Candy</Label>
+              <Label for="FavoriteTypeOfCandyId">Favorite Type of Candy</Label>
               <Input
               type="select"
               className="form-control"
-              id="favortieTypeOfCandyId"
-              value={newUser.favortieTypeOfCandyId}
-              onChange={this.formFieldStringState}
+              id="FavoriteTypeOfCandyId"
+              value={newUser.FavoriteTypeOfCandyId}
+              onChange={this.candySelector}
               required
               >
               {this.candyList()}
