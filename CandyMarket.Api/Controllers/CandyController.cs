@@ -35,7 +35,6 @@ namespace CandyMarket.Api.Controllers
         {
             return _repo.GetAllCandy().FirstOrDefault(candy => candy.Id == candyId);
         }
-
         [HttpPost]
         public IActionResult Add(AddCandyDto newCandy)
         {

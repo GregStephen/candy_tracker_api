@@ -57,7 +57,7 @@ class App extends React.Component {
           <MyNavbar authed={ authed } userObj={ userObj }/>
             <Switch>
               <PublicRoute path='/auth' component={Auth} authed={authed} userLoggedIn={ this.userLoggedIn }/>
-              <Route path='/new_user' component={NewUser} authed={authed}/>
+              <Route path='/new-user' component={NewUser} authed={authed}/>
               <PrivateRoute path="/home" exact component={ Home } authed={ authed } userObj={ userObj }/>
               <PrivateRoute path='/user/:id' component={ User } authed={ authed } userObj={ userObj }/>
               <Redirect from='*' to='/auth'/>

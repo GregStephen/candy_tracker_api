@@ -17,11 +17,11 @@ namespace CandyMarket.Api.Repositories
         {
             using (var db = new SqlConnection(_connectionString))
             {
-                var sql3 = @"SELECT Name
+                var sql = @"SELECT Name
                              FROM [Type]
                              WHERE Id = @candyId";
-                var parameters3 = new { candyId = user.FavoriteTypeOfCandyId };
-                var favoriteCandyName = db.QueryFirst<string>(sql3, parameters3);
+                var parameters = new { candyId = user.FavoriteTypeOfCandyId };
+                var favoriteCandyName = db.QueryFirst<string>(sql, parameters);
                 return favoriteCandyName;
             }
         }

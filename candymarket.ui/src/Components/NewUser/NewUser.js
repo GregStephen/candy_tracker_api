@@ -2,6 +2,7 @@ import React from 'react';
 import {
     Form, Label, Input, Button,
 } from 'reactstrap';
+import candyTypeData from '../../Data/CandyTypeRequests';
 
 const defaultUser = {
     firstName: '',
@@ -11,15 +12,15 @@ const defaultUser = {
     email: '',
 };
 
-class NewUser extends React.Component() {
+class NewUser extends React.Component {
     state = {
         newUser: defaultUser,
         error: '',
-        candyList,
+        candyList : [],
     }
 
     componentDidMount() {
-        candyTypeData.getCandyTypes()
+        candyTypeData.getAllCandyTypes()
           .then(candyList => this.setState({ candyList }))
           .catch(err => console.error('trouble getting candy', err));
       }
