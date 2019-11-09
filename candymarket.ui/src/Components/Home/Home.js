@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import Candy from '../Candy/Candy';
 
 import './Home.scss';
-import UserRequests from '../../Data/UserRequests';
 
 class Home extends Component {
 

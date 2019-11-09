@@ -45,6 +45,9 @@ class MyNavbar extends React.Component {
                 <DropdownItem>
                 <Link to={'/candy-list'}>Candy List</Link>
                 </DropdownItem>
+                <DropdownItem>
+                  <Link to={'/trade'}>Trade Network</Link>
+                </DropdownItem>
                 <DropdownItem onClick={this.logMeOut}>
                     Log Out
                 </DropdownItem>

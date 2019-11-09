@@ -39,7 +39,6 @@ class NewUser extends React.Component {
               });
             })
           .catch();
-        console.error(newUser);
     }
 
     formFieldStringState = (e) => {

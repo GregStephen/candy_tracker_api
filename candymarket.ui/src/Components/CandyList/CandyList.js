@@ -5,7 +5,6 @@ import {
 import candyRequests from '../../Data/CandyRequests';
 import AddCandyModalForm from '../AddCandyModalForm/AddCandyModalForm';
 import CandyRequests from '../../Data/CandyRequests';
-import UserRequests from '../../Data/UserRequests';
 import SingleCandyToBuy from '../SingleCandyToBuy/SingleCandyToBuy';
 
 class CandyList extends React.Component {

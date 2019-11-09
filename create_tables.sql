@@ -6,7 +6,8 @@ IF not exists (SELECT * FROM sys.tables WHERE [name] = 'Candy')
 		[Id] UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
 		[Name] NVARCHAR(255) not null,
 		[TypeId] INT not null,
-		[Price] DECIMAL(5,2) not null
+		[Size] INT not null,
+		[ImgUrl] NVARCHAR(max) not null
 	)
 	END
 ELSE
@@ -22,6 +23,17 @@ IF not exists (SELECT * FROM sys.tables WHERE [name] = 'Type')
 	END
 ELSE
 	PRINT 'Type table already exists!'
+
+IF not exists (SELECT * FROM sys.tables WHERE [name] = 'Trade')
+	BEGIN
+	CREATE TABLE [Trade]
+	(
+		[Id] UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+		[UserCandyId] UNIQUEIDENTIFIER not null
+	)
+	END
+ELSE
+	PRINT 'Trade table already exists!'
 
 IF not exists (SELECT * FROM sys.tables WHERE [name] = 'User')
 	BEGIN
@@ -89,6 +101,16 @@ IF not exists (SELECT * FROM sys.foreign_keys WHERE [name] = 'FK_User_Type')
 	END
 ELSE
 	PRINT 'Foregin key FK_User_Type already eists'
+
+IF not exists (SELECT * FROM sys.foreign_keys WHERE [name] = 'FK_Trade_UserCandy')
+	BEGIN
+	ALTER TABLE [Trade]
+	ADD CONSTRAINT FK_Trade_UserCandy
+		FOREIGN KEY (UserCandyId)
+		REFERENCES [UserCandy] (Id)
+	END
+ELSE
+	PRINT 'Foregin key FK_Trade_UserCandy already eists'
 
 /************************************
 INSERT INTO [Type]([Name])
