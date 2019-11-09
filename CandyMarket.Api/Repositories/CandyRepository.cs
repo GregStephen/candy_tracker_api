@@ -55,7 +55,7 @@ namespace CandyMarket.Api.Repositories
                 var sql = @"UPDATE [Candy]
                         SET [Name] = @name,
                             [TypeId] = @typeId,
-                            [Price] = @price,
+                            [ImgUrl] = @imgUrl,
                             [Size] = @size
                         OUTPUT inserted.*
                         WHERE id = @id";
@@ -81,12 +81,12 @@ namespace CandyMarket.Api.Repositories
                     INSERT INTO [Candy]
                         ([Name]
                         ,[TypeId]
-                        ,[Price]
+                        ,[ImgUrl]
                         ,[Size])
                     VALUES
                         (@name
                         ,@typeId
-                        ,@price
+                        ,@imgUrl
                         ,@size)";
 
                     return db.Execute(sql2, newCandy) == 1;

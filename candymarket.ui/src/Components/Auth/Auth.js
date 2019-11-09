@@ -21,7 +21,6 @@ class Auth extends React.Component {
         const { email, password } = this.state;
         UserRequests.logInUser(email,password)
         .then((request) => {
-            console.log(request);
             this.props.userLoggedIn(request);
         })
         .catch(err => this.setState({ error: err.message }));

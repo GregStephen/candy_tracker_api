@@ -11,7 +11,6 @@ import {
   DropdownToggle,
   DropdownItem,
 } from 'reactstrap';
-import PropTypes from 'prop-types';
 
 import './MyNavbar.scss';
 
@@ -20,10 +19,6 @@ class MyNavbar extends React.Component {
     isOpen: false,
   }
 
-  static propTypes = {
-    authed: PropTypes.bool.isRequired,
-    userObj: PropTypes.object,
-  }
 
   toggle = () => {
     this.setState({
@@ -39,7 +34,6 @@ class MyNavbar extends React.Component {
   };
 
   render() {
-    const { authed, userObj, getUser } = this.props;
     const buildNavbar = () => {
         return (
           <Nav className="ml-auto" navbar>

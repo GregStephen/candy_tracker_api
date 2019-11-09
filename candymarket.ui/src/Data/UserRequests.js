@@ -20,6 +20,12 @@ const logInUser = (email, password) => new Promise((resolve, reject) => {
 })
 const postUser = userObj => axios.post(`${baseUrl}/user/`, userObj);
 
+const buyCandy = (userId, candyId) => axios.post(`${baseUrl}/user/${userId}/buy/${candyId}`);
+
+const eatCandy = (userId, candyId) => axios.delete(`${baseUrl}/user/${userId}/eat/${candyId}`);
+
+const donateCandy = (userId, candyId) => axios.delete(`${baseUrl}/user/${userId}/donate/${candyId}`);
 
 
-export default {getAllUsers, getUserById, postUser, logInUser};
+
+export default {getAllUsers, getUserById, postUser, logInUser, buyCandy, eatCandy, donateCandy};

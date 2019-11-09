@@ -29,7 +29,7 @@ namespace CandyMarket.Api.Repositories
         {
             using (var db = new SqlConnection(_connectionString))
             {
-                var sql = @"SELECT c.Id, c.Name, c.Price, c.TypeId, c.Size
+                var sql = @"SELECT c.Id, c.Name, c.ImgUrl, c.TypeId, c.Size
                              FROM [UserCandy] uc
                                 JOIN [Candy] c ON uc.CandyId = c.Id
                              WHERE UserId = @userId";
@@ -169,11 +169,22 @@ namespace CandyMarket.Api.Repositories
                 return db.Execute(sql, new { userCandyId = userCandyIdToDelete }) == 1;
             }
         }
-        public bool EatCandy(Guid userCandyIdToDelete)
+        public Guid findUserCandyId(Guid userIdWhoIsEating, Guid candyIdToDelete)
         {
             using (var db = new SqlConnection(_connectionString))
             {
-                var userIdWhoIsEating = GetUserIdFromDatabase(userCandyIdToDelete);
+                var sql = @"SELECT Id
+                            FROM [UserCandy]
+                            WHERE ([UserId] = @userId AND [CandyId] = @candyId)";
+                var parameters = new { userId = userIdWhoIsEating, candyId = candyIdToDelete };
+                return db.QueryFirst<Guid>(sql, parameters);
+            }
+        }
+        public bool EatCandy(Guid userIdWhoIsEating, Guid candyIdToDelete)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var userCandyIdToDelete = findUserCandyId(userIdWhoIsEating, candyIdToDelete);
                 DeleteUserCandyEntry(userCandyIdToDelete);
                 var sql = @"UPDATE [User]
                             SET AmountOfCandyEaten += 1
@@ -206,13 +217,12 @@ namespace CandyMarket.Api.Repositories
             }
 
         }
-        public bool DonateCandy(Guid userCandyIdToDonate)
+        public bool DonateCandy(Guid userIdWhoIsDonating, Guid candyIdToDonate)
         {
             using (var db = new SqlConnection(_connectionString))
             {
-                var candyIdToDonate = GetCandyIdFromDatabase(userCandyIdToDonate);
-                var userIdWhoIsDonating = GetUserIdFromDatabase(userCandyIdToDonate);
                 var userToDonate = WhoToDonateTo(candyIdToDonate, userIdWhoIsDonating);
+                var userCandyIdToDonate = findUserCandyId(userIdWhoIsDonating, candyIdToDonate);
                 DeleteUserCandyEntry(userCandyIdToDonate);
                 var sql = @"INSERT INTO [UserCandy]
                             ([UserId], [CandyId])
@@ -223,6 +233,25 @@ namespace CandyMarket.Api.Repositories
                             WHERE Id = @UserId";
                 db.Execute(sql2, new { UserId = userIdWhoIsDonating });
                 return db.Execute(sql, new { CandyId = candyIdToDonate, UserId = userToDonate.Id }) == 1;
+            }
+        }
+        public bool TradeCandy(Guid userCandyId1, Guid userCandyId2)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var userId1 = GetUserIdFromDatabase(userCandyId1);
+                var candyId1 = GetCandyIdFromDatabase(userCandyId1);
+                var userId2 = GetUserIdFromDatabase(userCandyId2);
+                var candyId2 = GetCandyIdFromDatabase(userCandyId2);
+                DeleteUserCandyEntry(userCandyId1);
+                DeleteUserCandyEntry(userCandyId2);
+                var sql = @"INSERT INTO [UserCandy]
+                            ([Userid], [CandyId])
+                            VALUES
+                                (@userId1, @candyId2),
+                                (@userId2, @candyId1)";
+                var parameters = new { userId1, userId2, candyId1, candyId2 };
+                return db.Execute(sql, parameters) == 1;
             }
         }
     }

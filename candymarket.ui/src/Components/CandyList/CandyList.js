@@ -5,6 +5,8 @@ import {
 import candyRequests from '../../Data/CandyRequests';
 import AddCandyModalForm from '../AddCandyModalForm/AddCandyModalForm';
 import CandyRequests from '../../Data/CandyRequests';
+import UserRequests from '../../Data/UserRequests';
+import SingleCandyToBuy from '../SingleCandyToBuy/SingleCandyToBuy';
 
 class CandyList extends React.Component {
     state = {
@@ -19,6 +21,7 @@ class CandyList extends React.Component {
           addCandyModal: !prevState.addCandyModal,
         }));
     }
+
     loadPage = () => {
         candyRequests.getAllCandy()
             .then(data => {
@@ -26,8 +29,13 @@ class CandyList extends React.Component {
             })
             .catch(err => console.log(err));
     }
+
+    buyCandy = (candyId) => {
+        const { candyBought } = this.props;
+        candyBought(candyId);
+    }
+
     addCandy = (candyObj) => {
-        console.error(candyObj);
         CandyRequests.addCandy(candyObj)
             .then(() => {
                 this.loadPage();
@@ -39,17 +47,20 @@ class CandyList extends React.Component {
         this.loadPage();
     }
 
-
-    buildCandies = () => this.state.candyList.map(c => (
-        <h2>{c.name}</h2>
-    ));
-
     render() {
+        const showCandyToBuy = this.state.candyList.map(candy => (
+            <SingleCandyToBuy
+            key={ candy.id }
+            candy={ candy }
+            buyCandy = {this.buyCandy}
+            />
+            )
+        )
         return (
             <div className='CandyList'>
                 <h1>Here's a list of all the Candy we carry!</h1>
                 <button className='btn btn-success' onClick={this.toggleAddCandy}>Add More</button>
-                {this.buildCandies()}
+                {showCandyToBuy}
                 <div>
                     <Modal isOpen={this.state.addCandyModal} toggle={this.toggleModal}>
                         <ModalHeader toggle={this.toggleAddCandy}>Add Candy!</ModalHeader>

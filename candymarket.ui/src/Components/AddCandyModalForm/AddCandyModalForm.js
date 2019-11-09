@@ -11,7 +11,7 @@ class AddCandyModalForm extends React.Component {
       name: '',
       typeId: 0,
       size: '',
-      price: 0,
+      imgUrl: '',
     },
     candyType: [],
   }
@@ -81,11 +81,11 @@ class AddCandyModalForm extends React.Component {
               </Input>
             </FormGroup>
             <FormGroup>
-              <Label for="price">Price per item:</Label>
-              <Input type="number" name="price" id="price" value={newCandy.price} onChange={this.toIntSelector} required/>
+              <Label for="imgUrl">Image URL:</Label>
+              <Input type="url" name="imgUrl" id="imgUrl" value={newCandy.imgUrl} onChange={this.formFieldStringState} required/>
             </FormGroup>
             <FormGroup>
-              <Label for="size">Size of:</Label>
+              <Label for="size">Size of Candy:</Label>
               <Input type="input" name="size" id="size" value={newCandy.size} onChange={this.formFieldStringState} required/>
             </FormGroup>
           </ModalBody>

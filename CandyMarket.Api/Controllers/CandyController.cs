@@ -56,7 +56,7 @@ namespace CandyMarket.Api.Controllers
             var updatedCandy = new Candy()
             {
                 Name = updatedCandyCommand.Name,
-                Price = updatedCandyCommand.Price,
+                ImgUrl = updatedCandyCommand.ImgUrl,
                 TypeId = updatedCandyCommand.TypeId,
                 Size = updatedCandyCommand.Size
             };
@@ -68,14 +68,6 @@ namespace CandyMarket.Api.Controllers
         public void Delete(Guid candyIdToDelete)
         {
             _repo.DeleteCandy(candyIdToDelete);
-        }
-        //[HttpPost]
-        public void Trade()
-        {
-            /**
-             * flex goal: Trade Candy
-             * Hint: you're going to need to add Users to your application
-             */
         }
     }
 }
