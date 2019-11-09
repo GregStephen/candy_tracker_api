@@ -23,21 +23,31 @@ const PrivateRoute = ({ component: Component, authed, ...rest }) => {
   return <Route render={props => routeChecker(props)} />;
 };
 
+const defaultUser = {
+  FirstName: '',
+  LastName: '',
+  FavoriteTypeOfCandyId: 0,
+  Password: '',
+  Email: '',
+};
+
 class App extends React.Component {
   state = {
     authed: false,
-    userObj: {
-      firstName: 'DOPE',
-    }
+    userObj: defaultUser,
   };
 
   userLoggedIn = (user) => {
-    console.log(user);
     this.setState({
       authed : true,
       userObj : user})
   }
 
+  userLoggedOut = () => {
+    this.setState({
+      authed : false,
+      userObj : defaultUser})
+  }
   componentDidMount() {
   }
 
@@ -47,7 +57,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Router>
-          <MyNavbar authed={ authed } userObj={ userObj }/>
+          <MyNavbar authed={ authed } userObj={ userObj } userLoggedOut={ this.userLoggedOut }/>
             <Switch>
               <PublicRoute path='/auth' component={ Auth } authed={ authed } userLoggedIn={ this.userLoggedIn }/>
               <PublicRoute path='/new-user' component={ NewUser } authed={ authed } userLoggedIn = { this.userLoggedIn }/>

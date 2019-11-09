@@ -33,6 +33,7 @@ class MyNavbar extends React.Component {
 
   logMeOut = (e) => {
     e.preventDefault();
+    this.props.userLoggedOut();
     console.error('logged out');
     
   };
