@@ -7,9 +7,9 @@ import Auth from '../Components/Auth/Auth';
 import Home from '../Components/Home/Home';
 import User from '../Components/User/User';
 import NewUser from '../Components/NewUser/NewUser';
+import CandyList from '../Components/CandyList/CandyList';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
-import UserRequests from '../Data/UserRequests';
 
 const PublicRoute = ({ component: Component, authed, ...rest }) => {
   // props contains Location, Match, and History
@@ -61,7 +61,8 @@ class App extends React.Component {
             <Switch>
               <PublicRoute path='/auth' component={ Auth } authed={ authed } userLoggedIn={ this.userLoggedIn }/>
               <PublicRoute path='/new-user' component={ NewUser } authed={ authed } userLoggedIn = { this.userLoggedIn }/>
-              <PrivateRoute path="/home" exact component={ Home } authed={ authed } userObj={ userObj }/>
+              <PrivateRoute path='/home' exact component={ Home } authed={ authed } userObj={ userObj }/>
+              <PrivateRoute path='/candy-list' component={ CandyList } authed={ authed } userObj={ userObj}/>              
               <PrivateRoute path='/user/:id' component={ User } authed={ authed } userObj={ userObj }/>
               <Redirect from='*' to='/auth'/>
             </Switch>

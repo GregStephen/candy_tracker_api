@@ -7,4 +7,7 @@ const getAllCandy = () => new Promise((resolve, reject) => {
         .catch(err => reject(err));
 });
 
-export default {getAllCandy};
+const addCandy = candyObj => axios.post(`${baseUrl}/candy`, candyObj);
+
+
+export default {getAllCandy, addCandy};

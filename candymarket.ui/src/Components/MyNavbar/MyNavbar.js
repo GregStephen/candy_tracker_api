@@ -45,11 +45,11 @@ class MyNavbar extends React.Component {
           <Nav className="ml-auto" navbar>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
-                Yo Wassup
+                Menu
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem>
-                  Account Settings
+                <Link to={'/candy-list'}>Candy List</Link>
                 </DropdownItem>
                 <DropdownItem onClick={this.logMeOut}>
                     Log Out
