@@ -13,35 +13,13 @@ namespace CandyMarket.Api.Repositories
     {
         string _connectionString = "Server=localhost;Database=CandyMarket;Trusted_Connection=True;";
 
-        public string FetchFavoriteCandyName(User user)
-        {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                var sql = @"SELECT Name
-                             FROM [Type]
-                             WHERE Id = @candyId";
-                var parameters = new { candyId = user.FavoriteTypeOfCandyId };
-                var favoriteCandyName = db.QueryFirst<string>(sql, parameters);
-                return favoriteCandyName;
-            }
-        }
-        public List<Candy> FetchUsersCandyList(User user)
-        {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                var sql = @"SELECT c.Id, c.Name, c.ImgUrl, c.TypeId, c.Size
-                             FROM [UserCandy] uc
-                                JOIN [Candy] c ON uc.CandyId = c.Id
-                             WHERE UserId = @userId";
-                var parameters = new { userId = user.Id };
-                var candies = db.Query<Candy>(sql, parameters).ToList();
-                return candies;
-            }
-        }
+       
+
         public IEnumerable<User> GetAllUsers()
         {
             using (var db = new SqlConnection(_connectionString))
             {
+                var candyRepo = new CandyRepository();
                 var users = db.Query<User>
                    (
                    @"SELECT * 
@@ -49,9 +27,9 @@ namespace CandyMarket.Api.Repositories
                    ).ToList();
                 foreach (User user in users)
                 {
-                    var candies = FetchUsersCandyList(user);
+                    var candies = candyRepo.FetchUsersCandyList(user);
                     user.CandyOwned = candies;
-                    var favoriteCandyName = FetchFavoriteCandyName(user);
+                    var favoriteCandyName = candyRepo.FetchFavoriteCandyName(user);
                     user.FavoriteTypeOfCandyName = favoriteCandyName;
                 }
                 return users;
@@ -60,6 +38,7 @@ namespace CandyMarket.Api.Repositories
 
         public User GetUser(Guid userId)
         {
+            var candyRepo = new CandyRepository();
             using (var db = new SqlConnection(_connectionString))
             {
                 var sql = @"SELECT *
@@ -67,9 +46,9 @@ namespace CandyMarket.Api.Repositories
                             WHERE [Id] = @userId";
                 var parameters = new { userId };
                 var user = db.QueryFirst<User>(sql, parameters);
-                var candies = FetchUsersCandyList(user);
+                var candies = candyRepo.FetchUsersCandyList(user);
                 user.CandyOwned = candies;
-                var favoriteCandyName = FetchFavoriteCandyName(user);
+                var favoriteCandyName = candyRepo.FetchFavoriteCandyName(user);
                 user.FavoriteTypeOfCandyName = favoriteCandyName;
                 return user;
             }
@@ -106,18 +85,7 @@ namespace CandyMarket.Api.Repositories
                 return userIdToReturn;
             }
         }
-        public Guid GetCandyIdFromDatabase(Guid userCandyId)
-        {
-            using (var db = new SqlConnection(_connectionString))
-            {
-                var sql = @"SELECT CandyId
-                            FROM [UserCandy]
-                            WHERE [Id] = @userCandyId";
-                var parameters = new { userCandyId };
-                var candyIdToReturn = db.QueryFirst<Guid>(sql, parameters);
-                return candyIdToReturn;
-            }
-        }
+      
         public User GetUserById(Guid userId)
         {
             using (var db = new SqlConnection(_connectionString))
@@ -133,6 +101,7 @@ namespace CandyMarket.Api.Repositories
 
         public User GetUserByEmailAndPassword(string email, string password)
         {
+            var candyRepo = new CandyRepository();
             using (var db = new SqlConnection(_connectionString))
             {
                 var sql = @"SELECT *
@@ -140,9 +109,9 @@ namespace CandyMarket.Api.Repositories
                             WHERE ([Password] = @password AND [Email] = @email)";
                 var parameters = new { email, password };
                 var userToReturn = db.QueryFirst<User>(sql, parameters);
-                var candies = FetchUsersCandyList(userToReturn);
+                var candies = candyRepo.FetchUsersCandyList(userToReturn);
                 userToReturn.CandyOwned = candies;
-                var favoriteCandyName = FetchFavoriteCandyName(userToReturn);
+                var favoriteCandyName = candyRepo.FetchFavoriteCandyName(userToReturn);
                 userToReturn.FavoriteTypeOfCandyName = favoriteCandyName;
                 return userToReturn;
             }
@@ -169,7 +138,7 @@ namespace CandyMarket.Api.Repositories
                 return db.Execute(sql, new { userCandyId = userCandyIdToDelete }) == 1;
             }
         }
-        public Guid findUserCandyId(Guid userIdWhoIsEating, Guid candyIdToDelete)
+        public Guid FindUserCandyId(Guid userIdWhoIsEating, Guid candyIdToDelete)
         {
             using (var db = new SqlConnection(_connectionString))
             {
@@ -184,7 +153,7 @@ namespace CandyMarket.Api.Repositories
         {
             using (var db = new SqlConnection(_connectionString))
             {
-                var userCandyIdToDelete = findUserCandyId(userIdWhoIsEating, candyIdToDelete);
+                var userCandyIdToDelete = FindUserCandyId(userIdWhoIsEating, candyIdToDelete);
                 DeleteUserCandyEntry(userCandyIdToDelete);
                 var sql = @"UPDATE [User]
                             SET AmountOfCandyEaten += 1
@@ -196,15 +165,13 @@ namespace CandyMarket.Api.Repositories
         {
             using (var db = new SqlConnection(_connectionString))
             {
-                var sql = @"SELECT TypeId
-                             FROM [Candy]
-                             WHERE [Id] = @candyId";
-                var candyTypeId = db.QueryFirst<int>(sql, new { CandyId = candyId });
-                var sql2 = @"SELECT * 
+                var candyRepo = new CandyRepository();
+                var candyTypeId = candyRepo.GetCandyTypeId(candyId);
+                var sql = @"SELECT * 
                             FROM [User]
                             WHERE ([FavoriteTypeOfCandyId] = @candyTypeId AND [Id] != @userId)";
                 var parameters = new { CandyTypeId = candyTypeId, UserId = userIdWhoIsDonating };
-                var userToDonateTo = db.QueryFirstOrDefault<User>(sql2, parameters);
+                var userToDonateTo = db.QueryFirstOrDefault<User>(sql, parameters);
                 /* If their is no user who has that for their favorite candy
                     Then it looks for the user with the least amount of candy */
                 if (userToDonateTo == null)
@@ -222,7 +189,7 @@ namespace CandyMarket.Api.Repositories
             using (var db = new SqlConnection(_connectionString))
             {
                 var userToDonate = WhoToDonateTo(candyIdToDonate, userIdWhoIsDonating);
-                var userCandyIdToDonate = findUserCandyId(userIdWhoIsDonating, candyIdToDonate);
+                var userCandyIdToDonate = FindUserCandyId(userIdWhoIsDonating, candyIdToDonate);
                 DeleteUserCandyEntry(userCandyIdToDonate);
                 var sql = @"INSERT INTO [UserCandy]
                             ([UserId], [CandyId])
@@ -235,14 +202,12 @@ namespace CandyMarket.Api.Repositories
                 return db.Execute(sql, new { CandyId = candyIdToDonate, UserId = userToDonate.Id }) == 1;
             }
         }
-        public bool TradeCandy(Guid userCandyId1, Guid userCandyId2)
+        public bool TradeCandy(Guid userId1, Guid candyId1, Guid userId2, Guid candyId2)
         {
             using (var db = new SqlConnection(_connectionString))
             {
-                var userId1 = GetUserIdFromDatabase(userCandyId1);
-                var candyId1 = GetCandyIdFromDatabase(userCandyId1);
-                var userId2 = GetUserIdFromDatabase(userCandyId2);
-                var candyId2 = GetCandyIdFromDatabase(userCandyId2);
+                var userCandyId1 = FindUserCandyId(userId1, candyId1);
+                var userCandyId2 = FindUserCandyId(userId2, candyId2);
                 DeleteUserCandyEntry(userCandyId1);
                 DeleteUserCandyEntry(userCandyId2);
                 var sql = @"INSERT INTO [UserCandy]

@@ -12,13 +12,12 @@ namespace CandyMarket.Api.Repositories
         User GetUserByEmailAndPassword(string email, string password);
         bool AddUser(AddUserDto newUser);
         Guid GetUserIdFromDatabase(Guid userCandyId);
-        Guid GetCandyIdFromDatabase(Guid userCandyId);
         bool BuyCandy(Guid userIdWhoIsBuying, Guid candyIdGettingBought);
         bool DeleteUserCandyEntry(Guid userCandyIdToDelete);
         bool EatCandy(Guid userIdWhoIsEating, Guid candyIdToDelete);
         User WhoToDonateTo(Guid candyId, Guid userIdWhoIsDonating);
         bool DonateCandy(Guid userIdWhoIsDonating, Guid candyIdToDonate);
         User GetUserById(Guid userId);
-        bool TradeCandy(Guid userCandyId1, Guid userCandyId2);
+        bool TradeCandy(Guid userId1, Guid candyId1, Guid userId2, Guid candyId2);
     }
 }

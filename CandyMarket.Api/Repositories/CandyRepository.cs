@@ -94,5 +94,58 @@ namespace CandyMarket.Api.Repositories
                 return false;
             }
         }
+
+        public List<Candy> FetchUsersCandyList(User user)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"SELECT c.Id, c.Name, c.ImgUrl, c.TypeId, c.Size
+                             FROM [UserCandy] uc
+                                JOIN [Candy] c ON uc.CandyId = c.Id
+                             WHERE UserId = @userId";
+                var parameters = new { userId = user.Id };
+                var candies = db.Query<Candy>(sql, parameters).ToList();
+                return candies;
+            }
+        }
+
+        public string FetchFavoriteCandyName(User user)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"SELECT Name
+                             FROM [Type]
+                             WHERE Id = @candyId";
+                var parameters = new { candyId = user.FavoriteTypeOfCandyId };
+                var favoriteCandyName = db.QueryFirst<string>(sql, parameters);
+                return favoriteCandyName;
+            }
+        }
+        public Guid GetCandyIdFromDatabase(Guid userCandyId)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"SELECT CandyId
+                            FROM [UserCandy]
+                            WHERE [Id] = @userCandyId";
+                var parameters = new { userCandyId };
+                var candyIdToReturn = db.QueryFirst<Guid>(sql, parameters);
+                return candyIdToReturn;
+            }
+        }
+
+        public int GetCandyTypeId(Guid candyId)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"SELECT TypeId
+                             FROM [Candy]
+                             WHERE [Id] = @candyId";
+
+                var candyTypeId = db.QueryFirst<int>(sql, new { CandyId = candyId });
+                return candyTypeId;
+            }
+
+        }
     }
 }
