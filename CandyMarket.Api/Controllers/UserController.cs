@@ -40,6 +40,13 @@ namespace CandyMarket.Api.Controllers
         {
             return _repo.GetUserByEmailAndPassword(email, password);
         }
+
+        [HttpGet("user-candy/{userCandyId}")]
+        public User GetUserFromUserCandy(Guid userCandyId)
+        {
+            return _repo.GetUserFromDatabase(userCandyId);
+        }
+
         [HttpPost]
         public IActionResult Add(AddUserDto newUser)
         {
@@ -76,10 +83,10 @@ namespace CandyMarket.Api.Controllers
             _repo.DonateCandy(userIdDonating, candyIdToDonate);
             
         }
-        [HttpPost("{userCandyId1}/trade/{userCandyId2}")]
-        public IActionResult Trade(Guid userCandyId1, Guid userCandyId2)
+        [HttpPost("{userId1}/trades/{userId2}/{candyId1}/for/{candyId2}")]
+        public IActionResult Trade(Guid userId1, Guid userId2, Guid candyId1, Guid candyId2)
         {
-            if (_repo.TradeCandy(userCandyId1, userCandyId2))
+            if (_repo.TradeCandy(userId1, candyId1, userId2, candyId2))
             {
                 return Ok();
             }

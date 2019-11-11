@@ -73,15 +73,17 @@ namespace CandyMarket.Api.Repositories
                 return db.Execute(sql, newUser) == 1;
             }
         }
-        public Guid GetUserIdFromDatabase(Guid userCandyId)
+        public User GetUserFromDatabase(Guid userCandyId)
         {
             using (var db = new SqlConnection(_connectionString))
             {
-                var sql = @"SELECT UserId
-                            FROM [UserCandy]
-                            WHERE [Id] = @userCandyId";
+                var sql = @"SELECT u.*
+                            FROM [UserCandy] uc
+                                JOIN [User] u
+                                ON u.[Id] = uc.[Id]
+                            WHERE uc.[Id] = @userCandyId";
                 var parameters = new { userCandyId };
-                var userIdToReturn = db.QueryFirst<Guid>(sql, parameters);
+                var userIdToReturn = db.QueryFirst<User>(sql, parameters);
                 return userIdToReturn;
             }
         }

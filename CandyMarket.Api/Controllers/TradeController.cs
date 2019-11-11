@@ -28,5 +28,18 @@ namespace CandyMarket.Api.Controllers
         {
             return _repo.GetAllTrades();
         }
+        [HttpPost]
+        public IActionResult Add(Guid newTradeId)
+        {
+            if (_repo.AddTrade(newTradeId))
+            {
+                return Created($"trade/{newTradeId}", newTradeId);
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+        }
     }
 }

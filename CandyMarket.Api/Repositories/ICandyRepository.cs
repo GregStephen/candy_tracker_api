@@ -13,7 +13,7 @@ namespace CandyMarket.Api.Repositories
         string FetchFavoriteCandyName(User user);
         bool AddCandy(AddCandyDto newCandy);
         bool DeleteCandy(Guid candyIdToDelete);
-        Guid GetCandyIdFromDatabase(Guid userCandyId);
+        Candy GetCandyFromDatabase(Guid userCandyId);
         Candy UpdateCandy(Guid candyIdToUpdate, Candy updatedCandy);
     }
 }

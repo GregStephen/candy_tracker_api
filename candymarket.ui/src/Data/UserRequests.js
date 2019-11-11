@@ -17,7 +17,14 @@ const logInUser = (email, password) => new Promise((resolve, reject) => {
     axios.get(`${baseUrl}/user/${email}/p/${password}`)
         .then(result => resolve(result.data))
         .catch(err => reject(err));
-})
+});
+
+const getUserFromUserCandy = (userCandyId) => new Promise((resolve, reject) => {
+    axios.get(`${baseUrl}/user/user-candy/${userCandyId}`)
+    .then(result => resolve(result.data))
+    .catch(err => reject(err));
+});
+
 const postUser = userObj => axios.post(`${baseUrl}/user/`, userObj);
 
 const buyCandy = (userId, candyId) => axios.post(`${baseUrl}/user/${userId}/buy/${candyId}`);
@@ -28,4 +35,4 @@ const donateCandy = (userId, candyId) => axios.delete(`${baseUrl}/user/${userId}
 
 
 
-export default {getAllUsers, getUserById, postUser, logInUser, buyCandy, eatCandy, donateCandy};
+export default {getAllUsers, getUserById, postUser, logInUser, buyCandy, eatCandy, donateCandy, getUserFromUserCandy};

@@ -9,5 +9,6 @@ namespace CandyMarket.Api.Repositories
     public interface ITradeRepository
     {
         IEnumerable<Trade> GetAllTrades();
+        bool AddTrade(Guid newTrade);
     }
 }

@@ -23,5 +23,18 @@ namespace CandyMarket.Api.Repositories
                 return trades;
             }
         }
+
+        public bool AddTrade(Guid newTrade)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"
+                    INSERT INTO [Trade]
+                        ([UserCandyId])
+                    VALUES
+                        (@UserCandyId)";
+                return db.Execute(sql, new { userCandyId = newTrade }) == 1;
+            }
+        }
     }
 }

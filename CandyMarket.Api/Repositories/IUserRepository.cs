@@ -11,7 +11,7 @@ namespace CandyMarket.Api.Repositories
         User GetUser(Guid userId);
         User GetUserByEmailAndPassword(string email, string password);
         bool AddUser(AddUserDto newUser);
-        Guid GetUserIdFromDatabase(Guid userCandyId);
+        User GetUserFromDatabase(Guid userCandyId);
         bool BuyCandy(Guid userIdWhoIsBuying, Guid candyIdGettingBought);
         bool DeleteUserCandyEntry(Guid userCandyIdToDelete);
         bool EatCandy(Guid userIdWhoIsEating, Guid candyIdToDelete);

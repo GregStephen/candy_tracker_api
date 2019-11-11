@@ -121,15 +121,17 @@ namespace CandyMarket.Api.Repositories
                 return favoriteCandyName;
             }
         }
-        public Guid GetCandyIdFromDatabase(Guid userCandyId)
+        public Candy GetCandyFromDatabase(Guid userCandyId)
         {
             using (var db = new SqlConnection(_connectionString))
             {
-                var sql = @"SELECT CandyId
-                            FROM [UserCandy]
-                            WHERE [Id] = @userCandyId";
+                var sql = @"SELECT c*
+                            FROM [UserCandy] uc
+                                JOIN [Candy] c
+                                ON c.[Id] = uc.[Id]
+                            WHERE uc.[Id] = @userCandyId";
                 var parameters = new { userCandyId };
-                var candyIdToReturn = db.QueryFirst<Guid>(sql, parameters);
+                var candyIdToReturn = db.QueryFirst<Candy>(sql, parameters);
                 return candyIdToReturn;
             }
         }
