@@ -9,7 +9,7 @@ namespace CandyMarket.Api.Repositories
     {
         IEnumerable<Candy> GetAllCandy();
         Candy GetCandyById(Guid candyId);
-        List<Candy> FetchUsersCandyList(User user);
+        List<OwnedCandy> FetchUsersCandyList(User user);
         string FetchFavoriteCandyName(User user);
         bool AddCandy(AddCandyDto newCandy);
         bool DeleteCandy(Guid candyIdToDelete);

@@ -15,31 +15,40 @@ donateTheCandy = (candyId) => {
   const { candyDonated } = this.props;
   candyDonated(candyId);
 }
+
 componentDidMount() {
 
 }
+
 render () {
   const { userObj } = this.props;
   const showUsersCandy = userObj.candyOwned.map(candy => (
     <Candy
-    key={ candy.id }
+    key={ candy.userCandyId }
     candy={ candy }
     eatTheCandy={ this.eatTheCandy }
     donateTheCandy={ this.donateTheCandy }
     />
   ));
+
   return (
     <div className="Home">
       <h1>Welcome {userObj.firstName}!</h1>
       <Link to={'/candy-list'} className="btn btn-danger">Buy Some Candy</Link>
-      <h3>Amount of candy donated: {userObj.amountOfCandyDonated}</h3>
-      <h3>Amount of candy eaten: {userObj.amountOfCandyEaten}</h3>
-      <h3>{userObj.amountOfCandyEaten <= 5 ? 'Get to munchin' : 
+      <h5>Amount of candy donated: {userObj.amountOfCandyDonated}</h5>
+      <h5>Amount of candy eaten: {userObj.amountOfCandyEaten}</h5>
+      <p>{userObj.amountOfCandyEaten <= 5 ? 'Get to munchin' : 
            userObj.amountOfCandyEaten <= 25 ? 'There ya go chubby' :
-           'You have eaten a lot of fucking candy.'}</h3>
+           'You have eaten a lot of fucking candy.'}</p>
       <h2> Here's your list of candy that you own!</h2>
       <h3>Amount of Candy Owned : {userObj.candyOwned.length}</h3>
-        {showUsersCandy}
+      <div className="container">
+        <div className="row">
+          {showUsersCandy}
+        </div>
+        
+      </div>
+        
     </div>
     );
   }

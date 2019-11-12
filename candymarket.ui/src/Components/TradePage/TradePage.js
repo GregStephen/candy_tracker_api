@@ -1,6 +1,7 @@
 import React from 'react';
 import TradeRequests from '../../Data/TradeRequests';
 import UserRequests from '../../Data/UserRequests';
+import CandyRequests from '../../Data/CandyRequests';
 
 class TradePage extends React.Component {
     state = {

@@ -3,12 +3,14 @@ import React from 'react';
 class Candy extends React.Component {
     eatCandy = () => {
         const { candy, eatTheCandy } = this.props;
-        eatTheCandy(candy.id);
+        eatTheCandy(candy.userCandyId);
     };
+
     donateCandy = () => {
         const { candy, donateTheCandy } = this.props;
-        donateTheCandy(candy.id);
+        donateTheCandy(candy.userCandyId);
     };
+
     tradeCandy = () => {
 
     }
@@ -18,9 +20,9 @@ class Candy extends React.Component {
             <div className='Candy col-4'>
                 <div className='card'>
                     <div className='card-header'>
-                        {candy.name}
+                        {candy.name}, {candy.userCandyId}
                     </div>
-                    <img src={candy.imgUrl} class="card-img-top" alt={candy.name}></img>
+                    <img src={candy.imgUrl} className="card-img-top" alt={candy.name}></img>
                     <div className='card-body'>
                         <ul className='list-group list-group-flush'>
                             <li className='list-group-item'>{candy.size}</li>

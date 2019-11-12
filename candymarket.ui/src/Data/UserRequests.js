@@ -29,9 +29,9 @@ const postUser = userObj => axios.post(`${baseUrl}/user/`, userObj);
 
 const buyCandy = (userId, candyId) => axios.post(`${baseUrl}/user/${userId}/buy/${candyId}`);
 
-const eatCandy = (userId, candyId) => axios.delete(`${baseUrl}/user/${userId}/eat/${candyId}`);
+const eatCandy = (userId, userCandyId) => axios.delete(`${baseUrl}/user/${userId}/eat/${userCandyId}`);
 
-const donateCandy = (userId, candyId) => axios.delete(`${baseUrl}/user/${userId}/donate/${candyId}`);
+const donateCandy = (userId, userCandyId) => axios.delete(`${baseUrl}/user/${userId}/donate/${userCandyId}`);
 
 
 

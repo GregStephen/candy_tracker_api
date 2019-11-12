@@ -95,16 +95,16 @@ namespace CandyMarket.Api.Repositories
             }
         }
 
-        public List<Candy> FetchUsersCandyList(User user)
+        public List<OwnedCandy> FetchUsersCandyList(User user)
         {
             using (var db = new SqlConnection(_connectionString))
             {
-                var sql = @"SELECT c.Id, c.Name, c.ImgUrl, c.TypeId, c.Size
+                var sql = @"SELECT c.Id, c.Name, c.ImgUrl, c.TypeId, c.Size, uc.Id as UserCandyId, uc.IsUpForTrade
                              FROM [UserCandy] uc
                                 JOIN [Candy] c ON uc.CandyId = c.Id
                              WHERE UserId = @userId";
                 var parameters = new { userId = user.Id };
-                var candies = db.Query<Candy>(sql, parameters).ToList();
+                var candies = db.Query<OwnedCandy>(sql, parameters).ToList();
                 return candies;
             }
         }

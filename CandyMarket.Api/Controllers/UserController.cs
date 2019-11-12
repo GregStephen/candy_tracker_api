@@ -71,16 +71,16 @@ namespace CandyMarket.Api.Controllers
                 return BadRequest();
             }
         }
-        [HttpDelete("{userIdToDelete}/eat/{candyIdToDelete}")]
-        public void Delete(Guid userIdToDelete, Guid candyIdToDelete)
+        [HttpDelete("{userIdToDelete}/eat/{userCandyIdToDelete}")]
+        public void Delete(Guid userIdToDelete, Guid userCandyIdToDelete)
         {
-            _repo.EatCandy(userIdToDelete, candyIdToDelete);
+            _repo.EatCandy(userIdToDelete, userCandyIdToDelete);
         }
 
-        [HttpDelete("{userIdDonating}/donate/{candyIdToDonate}")]
-        public void Donate(Guid userIdDonating, Guid candyIdToDonate)
+        [HttpDelete("{userIdDonating}/donate/{userCandyIdToDonate}")]
+        public void Donate(Guid userIdDonating, Guid userCandyIdToDonate)
         {
-            _repo.DonateCandy(userIdDonating, candyIdToDonate);
+            _repo.DonateCandy(userIdDonating, userCandyIdToDonate);
             
         }
         [HttpPost("{userId1}/trades/{userId2}/{candyId1}/for/{candyId2}")]
