@@ -119,7 +119,7 @@ class App extends React.Component {
               <PrivateRoute path='/home' exact component={ Home } authed={ authed } userObj={ userObj } candyAte={this.candyAte} candyDonated={this.candyDonated} candyUpForTrade={this.candyUpForTrade} candyNotUpForTrade={this.candyNotUpForTrade}/>
               <PrivateRoute path='/candy-list' component={ CandyList } authed={ authed } userObj={ userObj} candyBought={this.candyBought}/>              
               <PrivateRoute path='/user/:id' component={ User } authed={ authed } userObj={ userObj }/>
-              <PrivateRoute path='/trade' component={TradePage} authed={ authed } userObj= { userObj }/>
+              <PrivateRoute path='/trade' component={TradePage} authed={ authed } userObj= { userObj } candyNotUpForTrade={this.candyNotUpForTrade}/>
               <Redirect from='*' to='/auth'/>
             </Switch>
         </Router>

@@ -7,7 +7,6 @@ namespace CandyMarket.Api.DataModels
 {
     public class Trade
     {
-        public Guid Id { get; set; }
         public string CandyName { get; set; }
         public string Type { get; set; }
         public string ImgUrl { get; set; }

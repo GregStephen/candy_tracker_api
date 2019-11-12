@@ -8,25 +8,36 @@ class TradePage extends React.Component {
     }
 
     componentDidMount() {
-        UserRequests.getAllTrades()
-            .then((results) => {
-                this.setState({ trades : results })
-                })
-            .catch(err => console.error(err));
+        this.refreshPage();
     }
+
+    refreshPage = () => {
+        UserRequests.getAllTrades()
+        .then((results) => {
+            this.setState({ trades : results })
+            })
+        .catch(err => console.error(err));
+    }
+    takeOffTrade = (userCandyId) => {
+        const { candyNotUpForTrade } = this.props;
+        candyNotUpForTrade(userCandyId);
+    }
+
     render() {
         const {trades} = this.state;
         const showTrades = trades.map(trade => (
             <Trade
             key={ trade.userCandyId }
             trade={ trade }
+            userObj= { this.props.userObj }
+            takeOffTrade = { this.takeOffTrade }
             />
           ));
         return (
             <div className='TradePage container'>
                 <h1>It's the god damn trade page mother fucker</h1>
                 <div className='row'>
-                    {showTrades}
+                    { showTrades }
                 </div>
             </div>
         )

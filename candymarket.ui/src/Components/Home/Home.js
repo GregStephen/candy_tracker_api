@@ -22,7 +22,7 @@ putTheCandyUpForTrade = (userCandyId) => {
 }
 
 unPutTheCandyUpForTrade = (userCandyId) => {
-  const {candyNotUpForTrade } = this.props;
+  const { candyNotUpForTrade } = this.props;
   candyNotUpForTrade(userCandyId);
 }
 componentDidMount() {
@@ -55,7 +55,7 @@ render () {
       <h3>Amount of Candy Owned : {userObj.candyOwned.length}</h3>
       <div className="container">
         <div className="row">
-          {showUsersCandy}
+          { showUsersCandy }
         </div>
         
       </div>
