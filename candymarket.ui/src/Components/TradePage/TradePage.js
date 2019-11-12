@@ -1,7 +1,6 @@
 import React from 'react';
-import TradeRequests from '../../Data/TradeRequests';
 import UserRequests from '../../Data/UserRequests';
-import CandyRequests from '../../Data/CandyRequests';
+import Trade from '../../Components/Trade/Trade';
 
 class TradePage extends React.Component {
     state = {
@@ -9,29 +8,26 @@ class TradePage extends React.Component {
     }
 
     componentDidMount() {
-        TradeRequests.getAllTrades()
+        UserRequests.getAllTrades()
             .then((results) => {
-                console.error(results);
-                results.forEach(result  => {
-                    UserRequests.getUserFromUserCandy(result.userCandyId)
-                    .then((user) => {
-                        result.user = user;
-                    });
-                })
-                results.forEach(result => {
-                   CandyRequests.getCandyFromUserCandy(result.userCandyId)
-                    .then((candy) => {
-                        result.candy = candy;
-                    });
-                })
                 this.setState({ trades : results })
                 })
             .catch(err => console.error(err));
     }
     render() {
+        const {trades} = this.state;
+        const showTrades = trades.map(trade => (
+            <Trade
+            key={ trade.userCandyId }
+            trade={ trade }
+            />
+          ));
         return (
-            <div className='TradePage'>
+            <div className='TradePage container'>
                 <h1>It's the god damn trade page mother fucker</h1>
+                <div className='row'>
+                    {showTrades}
+                </div>
             </div>
         )
     }

@@ -27,7 +27,7 @@ class Candy extends React.Component {
             <div className='Candy col-4'>
                 <div className='card'>
                     <div className='card-header'>
-                        {candy.name}, {candy.userCandyId}
+                        {candy.name}
                     </div>
                     <img src={candy.imgUrl} className="card-img-top" alt={candy.name}></img>
                     <div className='card-body'>

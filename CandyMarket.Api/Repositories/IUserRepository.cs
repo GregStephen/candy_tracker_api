@@ -8,6 +8,7 @@ namespace CandyMarket.Api.Repositories
     public interface IUserRepository
     {
         IEnumerable<User> GetAllUsers();
+        IEnumerable<Trade> GetAllTrades();
         User GetUser(Guid userId);
         User GetUserByEmailAndPassword(string email, string password);
         bool AddUser(AddUserDto newUser);

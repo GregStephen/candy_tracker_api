@@ -29,6 +29,11 @@ namespace CandyMarket.Api.Controllers
         {
             return _repo.GetAllUsers();
         }
+        [HttpGet("trades")]
+        public IEnumerable<Trade> GetAllTrades()
+        {
+            return _repo.GetAllTrades();
+        }
         [HttpGet("{userId}")]
         public User Get(Guid userId)
         {
@@ -109,10 +114,11 @@ namespace CandyMarket.Api.Controllers
                 return BadRequest();
             }
         }
-        [HttpPost("{userId1}/trades/{userId2}/{candyId1}/for/{candyId2}")]
-        public IActionResult Trade(Guid userId1, Guid userId2, Guid candyId1, Guid candyId2)
+
+        [HttpPost("{userCandyId1}/trades/{userCandyId2}")]
+        public IActionResult Trade(Guid userCandyId1, Guid userCandyId2)
         {
-            if (_repo.TradeCandy(userId1, candyId1, userId2, candyId2))
+            if (_repo.TradeCandy(userCandyId1, userCandyId2))
             {
                 return Ok();
             }

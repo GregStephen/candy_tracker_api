@@ -25,6 +25,12 @@ const getUserFromUserCandy = (userCandyId) => new Promise((resolve, reject) => {
     .catch(err => reject(err));
 });
 
+const getAllTrades = () => new Promise((resolve, reject) => {
+    axios.get(`${baseUrl}/user/trades`)
+        .then(result => resolve(result.data))
+        .catch(err => reject(err));
+});
+
 const postUser = userObj => axios.post(`${baseUrl}/user/`, userObj);
 
 const buyCandy = (userId, candyId) => axios.post(`${baseUrl}/user/${userId}/buy/${candyId}`);
@@ -48,6 +54,7 @@ export default {
     eatCandy,
     donateCandy,
     getUserFromUserCandy,
+    getAllTrades,
     putCandyUpForTrade,
     takeCandyOffTrade,
     tradeCandies

@@ -36,6 +36,33 @@ namespace CandyMarket.Api.Repositories
             }
         }
 
+        public IEnumerable<Trade> GetAllTrades()
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"SELECT uc.Id as UserCandyId, 
+                                    uc.IsUpForTrade, 
+                                    uc.CandyId, 
+                                    uc.UserId,
+                                    u.FirstName,
+                                    u.LastName,
+                                    c.Name as CandyName,
+                                    c.ImgUrl,
+                                    c.Size,
+                                    ct.Name as Type
+                            FROM [UserCandy] uc
+                                JOIN [User] u
+                                ON uc.UserId = u.Id
+                                JOIN [Candy] c
+                                On uc.CandyId = c.Id
+                                JOIN [Type] ct
+                                ON c.TypeId = ct.Id
+                            WHERE uc.[IsUpForTrade] = 1";
+                var trades = db.Query<Trade>(sql);
+                return trades;
+                
+            }
+        }
         public User GetUser(Guid userId)
         {
             var candyRepo = new CandyRepository();
@@ -230,12 +257,15 @@ namespace CandyMarket.Api.Repositories
         }
 
 
-        public bool TradeCandy(Guid userCandyId1, Guid userCandyId2);
+        public bool TradeCandy(Guid userCandyId1, Guid userCandyId2)
         {
             using (var db = new SqlConnection(_connectionString))
             {
-                var userCandyId1 = FindUserCandyId(userId1, candyId1);
-                var userCandyId2 = FindUserCandyId(userId2, candyId2);
+                var candyRepo = new CandyRepository();
+                var userId1 = GetUserFromDatabase(userCandyId1);
+                var userId2 = GetUserFromDatabase(userCandyId2);
+                var candyId1 = candyRepo.GetCandyFromDatabase(userCandyId1);
+                var candyId2 = candyRepo.GetCandyFromDatabase(userCandyId2);
                 DeleteUserCandyEntry(userCandyId1);
                 DeleteUserCandyEntry(userCandyId2);
                 var sql = @"INSERT INTO [UserCandy]
