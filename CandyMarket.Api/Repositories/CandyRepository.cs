@@ -18,8 +18,10 @@ namespace CandyMarket.Api.Repositories
             {
                 var candies = db.Query<Candy>
                    (
-                   @"SELECT * 
-                      FROM Candy"
+                   @"SELECT c.*, ct.Name as Type
+                      FROM Candy c
+                      JOIN Type ct
+                      ON c.TypeId = ct.Id"
                    );
                 return candies;
             }
@@ -29,9 +31,11 @@ namespace CandyMarket.Api.Repositories
         {
             using (var db = new SqlConnection(_connectionString))
             {
-                var sql = @"SELECT *
-                            FROM [Candy]
-                            WHERE [Id] = @candyId";
+                var sql = @"SELECT c.*, ct.Name as Type
+                            FROM Candy c
+                              JOIN Type ct
+                              ON c.TypeId = ct.Id
+                            WHERE c.[Id] = @candyId";
                 var parameters = new { candyId };
                 var candyToReturn = db.QueryFirst<Candy>(sql, parameters);
                 return candyToReturn;
@@ -99,9 +103,10 @@ namespace CandyMarket.Api.Repositories
         {
             using (var db = new SqlConnection(_connectionString))
             {
-                var sql = @"SELECT c.Id, c.Name, c.ImgUrl, c.TypeId, c.Size, uc.Id as UserCandyId, uc.IsUpForTrade
+                var sql = @"SELECT c.Id, c.Name, c.ImgUrl, c.TypeId, c.Size, uc.Id as UserCandyId, uc.IsUpForTrade, ct.Name as Type
                              FROM [UserCandy] uc
                                 JOIN [Candy] c ON uc.CandyId = c.Id
+                                JOIN [Type] ct ON c.TypeId = ct.Id
                              WHERE UserId = @userId";
                 var parameters = new { userId = user.Id };
                 var candies = db.Query<OwnedCandy>(sql, parameters).ToList();

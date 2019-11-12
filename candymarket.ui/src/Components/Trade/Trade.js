@@ -10,13 +10,17 @@ class Trade extends React.Component {
         const { trade, userObj } = this.props;
         return (
             <div className='Trade col-4'>
-                <div className='card'>
-                    <h1>{trade.candyName}</h1>
-                    <h1>{trade.firstName} {trade.lastName}</h1>
-                    <div className='trade-btn'>
-                        {userObj.id === trade.userId ? <button className='btn btn-danger' onClick={this.removeFromTrade}>Remove from Trade</button> :
-                        <button className='btn btn-success'>Offer a trade</button>}
-                    </div>
+                <div className='card-header'>
+                    {trade.candyName}
+                </div>
+                <img src={trade.imgUrl} className="card-img-top" alt={trade.candyName}></img>
+                <ul className='list-group list-group-flush'>
+                    <li className='list-group-item'>Offered by: {trade.firstName} {trade.lastName}</li>
+                    <li className='list-group-item'>Size: { trade.size }</li>
+                </ul>
+                <div className='trade-btn'>
+                    {userObj.id === trade.userId ? <button className='btn btn-danger' onClick={this.removeFromTrade}>Remove from Trade</button> :
+                    <button className='btn btn-success'>Offer a trade</button>}
                 </div>
             </div>
         )

@@ -56,10 +56,13 @@ class CandyList extends React.Component {
             )
         )
         return (
-            <div className='CandyList'>
+            <div className='CandyList container'>
                 <h1>Here's a list of all the Candy we carry!</h1>
                 <button className='btn btn-success' onClick={this.toggleAddCandy}>Add More</button>
-                {showCandyToBuy}
+                <div className='row'>
+                    {showCandyToBuy}
+                </div>
+
                 <div>
                     <Modal isOpen={this.state.addCandyModal} toggle={this.toggleModal}>
                         <ModalHeader toggle={this.toggleAddCandy}>Add Candy!</ModalHeader>
