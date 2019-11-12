@@ -205,7 +205,32 @@ namespace CandyMarket.Api.Repositories
                 return db.Execute(sql, new { CandyId = candyToDonate.Id, UserId = userToDonate.Id }) == 1;
             }
         }
-        public bool TradeCandy(Guid userId1, Guid candyId1, Guid userId2, Guid candyId2)
+
+        public bool PutCandyUpForTrade(Guid userCandyId)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"UPDATE [UserCandy]
+                            SET IsUpForTrade = 1
+                            WHERE [Id] = @userCandyId";
+                var parameters = new { userCandyId };
+                return db.Execute(sql, parameters) == 1;
+            }
+        }
+        public bool TakeCandyOffTrade(Guid userCandyId)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"UPDATE [UserCandy]
+                            SET IsUpForTrade = 0
+                            WHERE [Id] = @userCandyId";
+                var parameters = new { userCandyId };
+                return db.Execute(sql, parameters) == 1;
+            }
+        }
+
+
+        public bool TradeCandy(Guid userCandyId1, Guid userCandyId2);
         {
             using (var db = new SqlConnection(_connectionString))
             {

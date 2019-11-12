@@ -83,6 +83,32 @@ namespace CandyMarket.Api.Controllers
             _repo.DonateCandy(userIdDonating, userCandyIdToDonate);
             
         }
+
+        [HttpPut("up-for-trade/{userCandyId}")]
+        public IActionResult UpForTrade(Guid userCandyId)
+        {
+            if (_repo.PutCandyUpForTrade(userCandyId))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPut("off-trade/{userCandyId}")]
+        public IActionResult TakeOffTrade(Guid userCandyId)
+        {
+            if (_repo.TakeCandyOffTrade(userCandyId))
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
         [HttpPost("{userId1}/trades/{userId2}/{candyId1}/for/{candyId2}")]
         public IActionResult Trade(Guid userId1, Guid userId2, Guid candyId1, Guid candyId2)
         {

@@ -11,9 +11,16 @@ class Candy extends React.Component {
         donateTheCandy(candy.userCandyId);
     };
 
-    tradeCandy = () => {
-
+    tradeUpCandy = () => {
+        const {candy, putTheCandyUpForTrade } = this.props;
+        putTheCandyUpForTrade(candy.userCandyId);
     }
+    
+    unTradeUpCandy = () => {
+        const {candy, unPutTheCandyUpForTrade} = this.props;
+        unPutTheCandyUpForTrade(candy.userCandyId);
+    }
+
     render() {
         const {candy} = this.props;
         return (
@@ -30,7 +37,8 @@ class Candy extends React.Component {
                         <div className='buttons row justify-content-around'>
                             <button className='btn btn-danger col-3' onClick={this.eatCandy}>Eat</button>
                             <button className='btn btn-success col-3'onClick={this.donateCandy}>Donate</button>
-                            <button className='btn btn-info col-3' onClick={this.tradeCandy}>Trade</button>
+                            { candy.isUpForTrade ? <button className='btn btn-info col-3' onClick={this.unTradeUpCandy}>Remove From Trade</button> : 
+                                <button className='btn btn-info col-3' onClick={this.tradeUpCandy}>Put Up For Trade</button> }
                         </div>
                     </div>
                 </div>

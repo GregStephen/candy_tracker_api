@@ -6,16 +6,25 @@ import './Home.scss';
 
 class Home extends Component {
 
-eatTheCandy = (candyId) => {
+eatTheCandy = (userCandyId) => {
   const { candyAte } = this.props;
-  candyAte(candyId);
+  candyAte(userCandyId);
 }
 
-donateTheCandy = (candyId) => {
+donateTheCandy = (userCandyId) => {
   const { candyDonated } = this.props;
-  candyDonated(candyId);
+  candyDonated(userCandyId);
 }
 
+putTheCandyUpForTrade = (userCandyId) => {
+  const { candyUpForTrade } = this.props;
+  candyUpForTrade(userCandyId);
+}
+
+unPutTheCandyUpForTrade = (userCandyId) => {
+  const {candyNotUpForTrade } = this.props;
+  candyNotUpForTrade(userCandyId);
+}
 componentDidMount() {
 
 }
@@ -28,6 +37,8 @@ render () {
     candy={ candy }
     eatTheCandy={ this.eatTheCandy }
     donateTheCandy={ this.donateTheCandy }
+    putTheCandyUpForTrade={ this.putTheCandyUpForTrade }
+    unPutTheCandyUpForTrade={ this.unPutTheCandyUpForTrade }
     />
   ));
 

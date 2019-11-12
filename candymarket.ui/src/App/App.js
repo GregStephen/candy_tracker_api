@@ -77,7 +77,22 @@ class App extends React.Component {
       .then(() => {
         this.refreshUserObj();
       })
-      .catch()
+      .catch();
+  }
+
+  candyUpForTrade = (userCandyId) => {
+    UserRequests.putCandyUpForTrade(userCandyId)
+      .then(() => {
+        this.refreshUserObj();
+      })
+      .catch();
+  }
+
+  candyNotUpForTrade = (userCandyId) => {
+    UserRequests.takeCandyOffTrade(userCandyId)
+      .then(() => {
+        this.refreshUserObj();
+    }).catch();
   }
 
   candyBought = (candyId) => {
@@ -101,7 +116,7 @@ class App extends React.Component {
             <Switch>
               <PublicRoute path='/auth' component={ Auth } authed={ authed } userLoggedIn={ this.userLoggedIn }/>
               <PublicRoute path='/new-user' component={ NewUser } authed={ authed } userLoggedIn = { this.userLoggedIn }/>
-              <PrivateRoute path='/home' exact component={ Home } authed={ authed } userObj={ userObj } candyAte={this.candyAte} candyDonated={this.candyDonated}/>
+              <PrivateRoute path='/home' exact component={ Home } authed={ authed } userObj={ userObj } candyAte={this.candyAte} candyDonated={this.candyDonated} candyUpForTrade={this.candyUpForTrade} candyNotUpForTrade={this.candyNotUpForTrade}/>
               <PrivateRoute path='/candy-list' component={ CandyList } authed={ authed } userObj={ userObj} candyBought={this.candyBought}/>              
               <PrivateRoute path='/user/:id' component={ User } authed={ authed } userObj={ userObj }/>
               <PrivateRoute path='/trade' component={TradePage} authed={ authed } userObj= { userObj }/>

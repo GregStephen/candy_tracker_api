@@ -125,10 +125,10 @@ namespace CandyMarket.Api.Repositories
         {
             using (var db = new SqlConnection(_connectionString))
             {
-                var sql = @"SELECT c*
+                var sql = @"SELECT c.*
                             FROM [UserCandy] uc
                                 JOIN [Candy] c
-                                ON c.[Id] = uc.[Id]
+                                ON c.[Id] = uc.[CandyId]
                             WHERE uc.[Id] = @userCandyId";
                 var parameters = new { userCandyId };
                 var candyIdToReturn = db.QueryFirst<Candy>(sql, parameters);

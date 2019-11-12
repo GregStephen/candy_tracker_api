@@ -33,6 +33,22 @@ const eatCandy = (userId, userCandyId) => axios.delete(`${baseUrl}/user/${userId
 
 const donateCandy = (userId, userCandyId) => axios.delete(`${baseUrl}/user/${userId}/donate/${userCandyId}`);
 
+const putCandyUpForTrade = (userCandyId) => axios.put(`${baseUrl}/user/up-for-trade/${userCandyId}`);
 
+const takeCandyOffTrade = (userCandyId) => axios.put(`${baseUrl}/user/off-trade/${userCandyId}`);
 
-export default {getAllUsers, getUserById, postUser, logInUser, buyCandy, eatCandy, donateCandy, getUserFromUserCandy};
+const tradeCandies = (userCandyId1, userCandyId2) => axios.post(`${baseUrl}/user/${userCandyId1}/trades/${userCandyId2}`)
+
+export default {
+    getAllUsers,
+    getUserById,
+    postUser,
+    logInUser,
+    buyCandy,
+    eatCandy,
+    donateCandy,
+    getUserFromUserCandy,
+    putCandyUpForTrade,
+    takeCandyOffTrade,
+    tradeCandies
+};

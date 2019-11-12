@@ -18,6 +18,8 @@ namespace CandyMarket.Api.Repositories
         User WhoToDonateTo(Guid candyId, Guid userIdWhoIsDonating);
         bool DonateCandy(Guid userIdWhoIsDonating, Guid candyIdToDonate);
         User GetUserById(Guid userId);
-        bool TradeCandy(Guid userId1, Guid candyId1, Guid userId2, Guid candyId2);
+        bool PutCandyUpForTrade(Guid userCandyId);
+        bool TakeCandyOffTrade(Guid userCandyId);
+        bool TradeCandy(Guid userCandyId1, Guid userCandyId2);
     }
 }
