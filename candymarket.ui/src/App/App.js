@@ -78,7 +78,7 @@ class App extends React.Component {
         this.refreshUserObj();
       })
       .catch();
-  }
+  };
 
   candyUpForTrade = (userCandyId) => {
     UserRequests.putCandyUpForTrade(userCandyId)
@@ -86,7 +86,7 @@ class App extends React.Component {
         this.refreshUserObj();
       })
       .catch();
-  }
+  };
 
   candyNotUpForTrade = (userCandyId) => new Promise((resolve, reject) => {
     UserRequests.takeCandyOffTrade(userCandyId)
@@ -94,7 +94,11 @@ class App extends React.Component {
         this.refreshUserObj();
         resolve('');
     }).catch(err => reject(err))
-  })
+  });
+
+  candyTradeOffered = (userCandyId, userOfferingTheTradeId) => {
+    console.error(`${userCandyId} trade offered by ${userOfferingTheTradeId}`)
+  }
 
 
   candyBought = (candyId) => {

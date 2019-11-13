@@ -8,9 +8,10 @@ class Trade extends React.Component {
     }
 
     offerTrade = () => {
-        const { trade, tradeOffered } = this.props;
-        tradeOffered(trade.userCandyId);
+        const { trade, tradeOffered, userObj } = this.props;
+        tradeOffered(trade.userCandyId, userObj.id);
     }
+
     render() {
         const { trade, userObj } = this.props;
         return (
