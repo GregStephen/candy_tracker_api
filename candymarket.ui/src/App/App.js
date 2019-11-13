@@ -88,12 +88,14 @@ class App extends React.Component {
       .catch();
   }
 
-  candyNotUpForTrade = (userCandyId) => {
+  candyNotUpForTrade = (userCandyId) => new Promise((resolve, reject) => {
     UserRequests.takeCandyOffTrade(userCandyId)
       .then(() => {
         this.refreshUserObj();
-    }).catch();
-  }
+        resolve('');
+    }).catch(err => reject(err))
+  })
+
 
   candyBought = (candyId) => {
     const { userObj } = this.state;

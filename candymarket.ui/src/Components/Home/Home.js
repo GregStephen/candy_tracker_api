@@ -65,14 +65,9 @@ render () {
         <p className='col-12 col-md-8'>Amount of Candy Owned : {userObj.candyOwned.length}</p>
       </div>
     </div>
-
-      <div className="container">
-        <div className="row">
-          { showUsersCandy }
-        </div>
-        
-      </div>
-        
+      <div className="row">
+        { showUsersCandy }
+      </div>  
     </div>
     );
   }

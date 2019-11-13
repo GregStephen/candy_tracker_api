@@ -18,11 +18,18 @@ class TradePage extends React.Component {
             })
         .catch(err => console.error(err));
     }
+
     takeOffTrade = (userCandyId) => {
         const { candyNotUpForTrade } = this.props;
-        candyNotUpForTrade(userCandyId);
+        candyNotUpForTrade(userCandyId)
+            .then(() => {
+                this.refreshPage()
+            });
     }
 
+    tradeOffered = () => {
+        console.error('offered')
+    }
     render() {
         const {trades} = this.state;
         const showTrades = trades.map(trade => (
@@ -31,6 +38,7 @@ class TradePage extends React.Component {
             trade={ trade }
             userObj= { this.props.userObj }
             takeOffTrade = { this.takeOffTrade }
+            tradeOffered = { this.tradeOffered }
             />
           ));
         return (

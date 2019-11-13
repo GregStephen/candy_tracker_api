@@ -6,6 +6,11 @@ class Trade extends React.Component {
         const { takeOffTrade, trade } = this.props;
         takeOffTrade(trade.userCandyId);
     }
+
+    offerTrade = () => {
+        const { trade, tradeOffered } = this.props;
+        tradeOffered(trade.userCandyId);
+    }
     render() {
         const { trade, userObj } = this.props;
         return (
@@ -20,7 +25,7 @@ class Trade extends React.Component {
                 </ul>
                 <div className='trade-btn'>
                     {userObj.id === trade.userId ? <button className='btn btn-danger' onClick={this.removeFromTrade}>Remove from Trade</button> :
-                    <button className='btn btn-success'>Offer a trade</button>}
+                    <button className='btn btn-success' onClick={this.offerTrade}>Offer a trade</button>}
                 </div>
             </div>
         )
