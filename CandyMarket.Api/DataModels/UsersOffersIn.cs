@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CandyMarket.Api.DataModels
 {
-    public class UsersOffersOut
+    public class UsersOffersIn
     {
         public Guid Id { get; set; }
         public string Message { get; set; }
@@ -13,11 +13,11 @@ namespace CandyMarket.Api.DataModels
         public string OfferedCandyType { get; set; }
         public string OfferedCandyImgUrl { get; set; }
         public string OfferedCandySize { get; set; }
+        public string OfferedFirstName { get; set; }
+        public string OfferedLastName { get; set; }
+        public Guid OfferedUserId { get; set; }
         public Guid OfferedUserCandyId { get; set; }
         public Guid OfferedCandyId { get; set; }
-        public Guid RequestedUserId { get; set; }
-        public string RequestedFirstName { get; set; }
-        public string RequestedLastName { get; set; }
         public string RequestedCandyName { get; set; }
         public string RequestedCandyType { get; set; }
         public string RequestedCandyImgUrl { get; set; }

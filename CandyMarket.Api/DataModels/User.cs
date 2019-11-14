@@ -17,7 +17,7 @@ namespace CandyMarket.Api.DataModels
         public int AmountOfCandyEaten { get; set; }
         public int AmountOfCandyDonated { get; set; }
         public List<OwnedCandy> CandyOwned { get; set; }
-        public List<Offer> OffersIn { get; set; }
-        public List<Offer> OffersOut { get; set; }
+        public List<UsersOffersIn> OffersIn { get; set; }
+        public List<UsersOffersOut> OffersOut { get; set; }
     }
 }

@@ -32,11 +32,13 @@ namespace CandyMarket.Api.Repositories
                     user.CandyOwned = candies;
                     var favoriteCandyName = candyRepo.FetchFavoriteCandyName(user);
                     user.FavoriteTypeOfCandyName = favoriteCandyName;
-                    var offersOut = offerRepo.FetchUsersOffersOut(user);
-                    user.OffersOut = offersOut;
-                    var offersIn = offerRepo.FetchUsersOffersIn(user);
-                    user.OffersIn = offersIn;
-                    
+                    foreach (OwnedCandy ownedCandy in candies)
+                    {
+                        var offersOut = offerRepo.FetchUsersOffersOut(ownedCandy.UserCandyId);
+                        user.OffersOut = offersOut;
+                        var offersIn = offerRepo.FetchUsersOffersIn(ownedCandy.UserCandyId);
+                        user.OffersIn = offersIn;
+                    }
                 }
                 return users;
             }
