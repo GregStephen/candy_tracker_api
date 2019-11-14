@@ -64,10 +64,11 @@ namespace CandyMarket.Api.Controllers
                 return BadRequest();
             }
         }
+
         [HttpPost("{userId}/buy/{candyId}")]
         public IActionResult Buy(Guid userId, Guid candyId)
         {
-            if(_repo.BuyCandy(userId, candyId))
+            if (_repo.BuyCandy(userId, candyId))
             {
                 return Ok();
             }
@@ -76,6 +77,7 @@ namespace CandyMarket.Api.Controllers
                 return BadRequest();
             }
         }
+
         [HttpDelete("{userIdToDelete}/eat/{userCandyIdToDelete}")]
         public void Delete(Guid userIdToDelete, Guid userCandyIdToDelete)
         {

@@ -13,6 +13,7 @@ import CandyList from '../Components/CandyList/CandyList';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
 import UserRequests from '../Data/UserRequests';
+import OfferRequests from '../Data/OfferRequests';
 
 
 const PublicRoute = ({ component: Component, authed, ...rest }) => {
@@ -96,8 +97,12 @@ class App extends React.Component {
     }).catch(err => reject(err))
   });
 
-  candyTradeOffered = (userCandyId, userOfferingTheTradeId) => {
-    console.error(`${userCandyId} trade offered by ${userOfferingTheTradeId}`)
+  candyTradeOffered = (offer) => {
+    OfferRequests.addOffer(offer)
+      .then(() => {
+        this.refreshUserObj();
+      })
+      .catch(err => console.error(err));
   }
 
 
@@ -125,7 +130,7 @@ class App extends React.Component {
               <PrivateRoute path='/home' exact component={ Home } authed={ authed } userObj={ userObj } candyAte={this.candyAte} candyDonated={this.candyDonated} candyUpForTrade={this.candyUpForTrade} candyNotUpForTrade={this.candyNotUpForTrade}/>
               <PrivateRoute path='/candy-list' component={ CandyList } authed={ authed } userObj={ userObj} candyBought={this.candyBought}/>              
               <PrivateRoute path='/user/:id' component={ User } authed={ authed } userObj={ userObj }/>
-              <PrivateRoute path='/trade' component={TradePage} authed={ authed } userObj= { userObj } candyNotUpForTrade={this.candyNotUpForTrade}/>
+              <PrivateRoute path='/trade' component={TradePage} authed={ authed } userObj= { userObj } candyNotUpForTrade={this.candyNotUpForTrade} candyTradeOffered={this.candyTradeOffered}/>
               <Redirect from='*' to='/auth'/>
             </Switch>
         </Router>

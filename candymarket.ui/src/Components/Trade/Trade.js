@@ -1,15 +1,28 @@
 import React from 'react';
+import {
+    Modal, ModalHeader,
+  } from 'reactstrap';
+import ConfirmOfferModalForm from '../ConfirmOfferModalForm/ConfirmOfferModalForm';
 
 class Trade extends React.Component {
+    state ={
+       confirmOfferModal: false,
+        collapse: false,
+    }
 
+    toggleConfirmOffer = () => {
+        this.setState(prevState => ({
+          confirmOfferModal: !prevState.confirmOfferModal,
+        }));
+    }
     removeFromTrade = () => {
         const { takeOffTrade, trade } = this.props;
         takeOffTrade(trade.userCandyId);
     }
 
-    offerTrade = () => {
-        const { trade, tradeOffered, userObj } = this.props;
-        tradeOffered(trade.userCandyId, userObj.id);
+    addCandyOffer = (offer) => {
+        const {tradeOffered} = this.props;
+        tradeOffered(offer);
     }
 
     render() {
@@ -26,7 +39,18 @@ class Trade extends React.Component {
                 </ul>
                 <div className='trade-btn'>
                     {userObj.id === trade.userId ? <button className='btn btn-danger' onClick={this.removeFromTrade}>Remove from Trade</button> :
-                    <button className='btn btn-success' onClick={this.offerTrade}>Offer a trade</button>}
+                    <button className='btn btn-success' onClick={this.toggleConfirmOffer}>Offer a trade</button>}
+                </div>
+                <div>
+                    <Modal isOpen={this.state.confirmOfferModal} toggle={this.toggleModal}>
+                        <ModalHeader toggle={this.toggleConfirmOffer}>Offer Up!</ModalHeader>
+                        <ConfirmOfferModalForm
+                        toggleConfirmOffer={this.toggleConfirmOffer}
+                        addCandyOffer={this.addCandyOffer}
+                        candyWanted={trade}
+                        userObj={userObj}
+                        />
+                    </Modal>
                 </div>
             </div>
         )

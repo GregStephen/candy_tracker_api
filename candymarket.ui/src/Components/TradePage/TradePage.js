@@ -27,13 +27,13 @@ class TradePage extends React.Component {
             });
     }
 
-    tradeOffered = (userCandyId, userOfferingTheTradeId) => {
+    tradeOffered = (offer) => {
         const { candyTradeOffered } = this.props;
-        candyTradeOffered(userCandyId, userOfferingTheTradeId);
-        console.error('offered')
+        candyTradeOffered(offer);
     }
+
     render() {
-        const {trades} = this.state;
+        const { trades } = this.state;
         const showTrades = trades.map(trade => (
             <Trade
             key={ trade.userCandyId }

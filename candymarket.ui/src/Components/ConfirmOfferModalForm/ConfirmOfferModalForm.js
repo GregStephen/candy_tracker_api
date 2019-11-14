@@ -4,12 +4,12 @@ import {
 } from 'reactstrap';
 import CandyTypeRequests from '../../Data/CandyTypeRequests';
 
-class ConfirmTradeModalForm extends React.Component {
+class ConfirmOfferModalForm extends React.Component {
 
   state = {
-    newCandyTrade: {
-      userCandyId1: this.props.candyWanted.userCandyId,
-      userCandyId2: '',
+    newCandyOffer: {
+      Offered: '',
+      Requested: this.props.candyWanted.userCandyId,
       message: '',
     },
     candyToTrade: [],
@@ -17,36 +17,39 @@ class ConfirmTradeModalForm extends React.Component {
   }
 
   componentDidMount() {
-    // need to get the candy to trade that the user has put up
+    const { userObj } = this.props;
+    console.error(userObj)
+    const candyToTrade = userObj.candyOwned.filter(candy => candy.isUpForTrade === true);
+    this.setState({ candyToTrade })
     CandyTypeRequests.getAllCandyTypes()      
         .then(candyType => this.setState({ candyType }))
       .catch(err => console.error('trouble getting candy types', err));
   }
 
   toggleModal = () => {
-    const { toggleAddCandyTrade } = this.props;
-    toggleAddCandyTrade();
+    const { toggleConfirmOffer } = this.props;
+    toggleConfirmOffer();
   }
 
   formFieldStringState = (e) => {
-    const tempCandyTrade = { ...this.state.newCandyTrade };
-    tempCandyTrade[e.target.id] = e.target.value;
-    this.setState({ newCandyTrade: tempCandyTrade });
+    const tempCandyOffer = { ...this.state.newCandyOffer };
+    tempCandyOffer[e.target.id] = e.target.value;
+    this.setState({ newCandyOffer : tempCandyOffer });
   }
 
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { addCandyTrade } = this.props
-    const { newCandyTrade } = this.state;
-    addCandyTrade(newCandyTrade);
+    const { addCandyOffer } = this.props
+    const { newCandyOffer } = this.state;
+    addCandyOffer(newCandyOffer);
     this.toggleModal();
   }
 
   candyToTradeList = () => {
     const { candyToTrade } = this.state;
     const options = candyToTrade.map(candyTrade => (
-      <option key={candyTrade.userCandyId} value={candyTrade.userCandyId}>{candyTrade.candyName}</option>
+      <option key={candyTrade.userCandyId} value={candyTrade.userCandyId}>{candyTrade.name}</option>
     ));
     options.unshift(<option key='pick not' value="">Candy To Trade</option>);
     return options;
@@ -54,32 +57,28 @@ class ConfirmTradeModalForm extends React.Component {
 
 
   render() {
-    const { newCandyTrade } = this.state;
+    const { newCandyOffer, candyWanted } = this.state;
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
           <ModalBody>
           <div className='Trade col-4'>
                 <div className='card-header'>
-                    {newCandyTrade.candyName}
+                    {candyWanted.candyName}
                 </div>
-                <img src={trade.imgUrl} className="card-img-top" alt={trade.candyName}></img>
+                <img src={candyWanted.imgUrl} className="card-img-top" alt={candyWanted.candyName}></img>
                 <ul className='list-group list-group-flush'>
-                    <li className='list-group-item'>Offered by: {trade.firstName} {trade.lastName}</li>
-                    <li className='list-group-item'>Size: { trade.size }</li>
+                    <li className='list-group-item'>Offered by: {candyWanted.firstName} {candyWanted.lastName}</li>
+                    <li className='list-group-item'>Size: { candyWanted.size }</li>
                 </ul>
-                <div className='trade-btn'>
-                    {userObj.id === trade.userId ? <button className='btn btn-danger' onClick={this.removeFromTrade}>Remove from Trade</button> :
-                    <button className='btn btn-success' onClick={this.offerTrade}>Offer a trade</button>}
-                </div>
             </div>
             <FormGroup>
-              <Label for="userCandyId2">Candy You Want To Trade:</Label>
+              <Label for="Offered">Candy You Want To Trade:</Label>
               <Input
               type="select"
               className="form-control"
-              id="userCandyId2"
-              value={newCandyTrade.userCandyId2}
+              id="Offered"
+              value={newCandyOffer.Offered}
               onChange={this.formFieldStringState}
               required
               >
@@ -88,7 +87,7 @@ class ConfirmTradeModalForm extends React.Component {
             </FormGroup>
             <FormGroup>
               <Label for="message">Message to user:</Label>
-              <Input type="input" name="message" id="message" value={newCandyTrade.message} onChange={this.formFieldStringState}/>
+              <Input type="input" name="message" id="message" value={newCandyOffer.message} onChange={this.formFieldStringState}/>
             </FormGroup>
           </ModalBody>
           <ModalFooter>
@@ -101,4 +100,4 @@ class ConfirmTradeModalForm extends React.Component {
   }
 }
 
-export default ConfirmTradeModalForm;
+export default ConfirmOfferModalForm;

@@ -24,16 +24,18 @@ IF not exists (SELECT * FROM sys.tables WHERE [name] = 'Type')
 ELSE
 	PRINT 'Type table already exists!'
 
-IF not exists (SELECT * FROM sys.tables WHERE [name] = 'Trade')
+IF not exists (SELECT * FROM sys.tables WHERE [name] = 'Offer')
 	BEGIN
-	CREATE TABLE [Trade]
+	CREATE TABLE Offer
 	(
 		[Id] UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-		[UserCandyId] UNIQUEIDENTIFIER not null
+		[Offered] UNIQUEIDENTIFIER not null,
+		[Requested] UNIQUEIDENTIFIER not null,
+		[Message] NVARCHAR(max) null
 	)
 	END
 ELSE
-	PRINT 'Trade table already exists!'
+	PRINT 'Offer table already exists'
 
 IF not exists (SELECT * FROM sys.tables WHERE [name] = 'User')
 	BEGIN
@@ -102,15 +104,25 @@ IF not exists (SELECT * FROM sys.foreign_keys WHERE [name] = 'FK_User_Type')
 ELSE
 	PRINT 'Foregin key FK_User_Type already eists'
 
-IF not exists (SELECT * FROM sys.foreign_keys WHERE [name] = 'FK_Trade_UserCandy')
+IF not exists (SELECT * FROM sys.foreign_keys WHERE [name] = 'FK_Offer_UserCandy')
 	BEGIN
-	ALTER TABLE [Trade]
-	ADD CONSTRAINT FK_Trade_UserCandy
-		FOREIGN KEY (UserCandyId)
+	ALTER TABLE [Offer]
+	ADD CONSTRAINT FK_Offer_UserCandy
+		FOREIGN KEY (Offered)
 		REFERENCES [UserCandy] (Id)
 	END
 ELSE
-	PRINT 'Foregin key FK_Trade_UserCandy already eists'
+	PRINT 'Foregin key FK_Offer_UserCandy already eists'
+
+IF not exists (SELECT * FROM sys.foreign_keys WHERE [name] = 'FK_Offer_UserCandy2')
+	BEGIN
+	ALTER TABLE [Offer]
+	ADD CONSTRAINT FK_Offer_UserCandy2
+		FOREIGN KEY (Requested)
+		REFERENCES [UserCandy] (Id)
+	END
+ELSE
+	PRINT 'Foregin key FK_Offer_UserCandy2 already eists'
 
 /************************************
 INSERT INTO [Type]([Name])
@@ -147,17 +159,3 @@ VALUES ('Gummy'),
 		('Sweet Tarts Candy')
 ***********************************/
 
-/*
-INSERT INTO [User]([FirstName], [LastName], [FavoriteTypeOfCandyId])
-	VALUES ('Greg', 'Stephen', 2)
-*/
-
-SELECT u.FirstName + ' ' + u.LastName as FullName, t.Name AS FavoriteCandy
-FROM [User] u
-	JOIN [Type] t
-	ON u.FavoriteTypeOfCandyId = t.Id
-
-SELECT c.Id, c.Name, c.Price, t.Name 
-FROM Candy c
-	JOIN [Type] t
-		ON c.TypeId = t.Id

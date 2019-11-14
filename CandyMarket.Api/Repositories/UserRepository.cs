@@ -256,7 +256,6 @@ namespace CandyMarket.Api.Repositories
             }
         }
 
-
         public bool TradeCandy(Guid userCandyId1, Guid userCandyId2)
         {
             using (var db = new SqlConnection(_connectionString))
