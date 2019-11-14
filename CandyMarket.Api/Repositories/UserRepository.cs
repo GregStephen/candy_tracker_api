@@ -20,6 +20,7 @@ namespace CandyMarket.Api.Repositories
             using (var db = new SqlConnection(_connectionString))
             {
                 var candyRepo = new CandyRepository();
+                var offerRepo = new OfferRepository();
                 var users = db.Query<User>
                    (
                    @"SELECT * 
@@ -31,6 +32,11 @@ namespace CandyMarket.Api.Repositories
                     user.CandyOwned = candies;
                     var favoriteCandyName = candyRepo.FetchFavoriteCandyName(user);
                     user.FavoriteTypeOfCandyName = favoriteCandyName;
+                    var offersOut = offerRepo.FetchUsersOffersOut(user);
+                    user.OffersOut = offersOut;
+                    var offersIn = offerRepo.FetchUsersOffersIn(user);
+                    user.OffersIn = offersIn;
+                    
                 }
                 return users;
             }

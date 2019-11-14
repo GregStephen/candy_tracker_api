@@ -36,5 +36,27 @@ namespace CandyMarket.Api.Repositories
                 return db.Execute(sql, newOffer) == 1;
             }
         }
+
+        public List<UsersOffersOut> FetchUsersOffersOut(User user)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"";
+                var parameters = new { };
+                var offersOut = db.Query<UsersOffersOut>(sql, parameters).ToList();
+                return offersOut;
+            }
+        }
+
+        public List<Offer> FetchUsersOffersIn(User user)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"";
+                var parameters = new { };
+                var offersIn = db.Query<Offer>(sql, parameters).ToList();
+                return offersIn;  
+            }
+        }
     }
 }
