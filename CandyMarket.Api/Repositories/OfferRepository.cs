@@ -122,5 +122,17 @@ namespace CandyMarket.Api.Repositories
                 return offersIn;  
             }
         }
+
+        public bool RemoveOffer(Guid userCandyId)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"DELETE
+                            FROM [Offer]
+                            WHERE (Offer.Offered = @userCandyId OR Offer.Requested = @userCandyId)";
+                var parameters = new { userCandyId };
+                return db.Execute(sql, parameters) == 1;
+            }
+        }
     }
 }

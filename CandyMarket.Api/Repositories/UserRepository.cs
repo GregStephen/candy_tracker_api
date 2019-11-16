@@ -74,6 +74,7 @@ namespace CandyMarket.Api.Repositories
         public User GetUser(Guid userId)
         {
             var candyRepo = new CandyRepository();
+            var offerRepo = new OfferRepository();
             using (var db = new SqlConnection(_connectionString))
             {
                 var sql = @"SELECT *
@@ -85,6 +86,13 @@ namespace CandyMarket.Api.Repositories
                 user.CandyOwned = candies;
                 var favoriteCandyName = candyRepo.FetchFavoriteCandyName(user);
                 user.FavoriteTypeOfCandyName = favoriteCandyName;
+                foreach (OwnedCandy ownedCandy in candies)
+                {
+                    var offersOut = offerRepo.FetchUsersOffersOut(ownedCandy.UserCandyId);
+                    user.OffersOut = offersOut;
+                    var offersIn = offerRepo.FetchUsersOffersIn(ownedCandy.UserCandyId);
+                    user.OffersIn = offersIn;
+                }
                 return user;
             }
         }
@@ -139,6 +147,7 @@ namespace CandyMarket.Api.Repositories
         public User GetUserByEmailAndPassword(string email, string password)
         {
             var candyRepo = new CandyRepository();
+            var offerRepo = new OfferRepository();
             using (var db = new SqlConnection(_connectionString))
             {
                 var sql = @"SELECT *
@@ -150,6 +159,13 @@ namespace CandyMarket.Api.Repositories
                 userToReturn.CandyOwned = candies;
                 var favoriteCandyName = candyRepo.FetchFavoriteCandyName(userToReturn);
                 userToReturn.FavoriteTypeOfCandyName = favoriteCandyName;
+                foreach (OwnedCandy ownedCandy in candies)
+                {
+                    var offersOut = offerRepo.FetchUsersOffersOut(ownedCandy.UserCandyId);
+                    userToReturn.OffersOut = offersOut;
+                    var offersIn = offerRepo.FetchUsersOffersIn(ownedCandy.UserCandyId);
+                    userToReturn.OffersIn = offersIn;
+                }
                 return userToReturn;
             }
         }
@@ -190,7 +206,9 @@ namespace CandyMarket.Api.Repositories
         {
             using (var db = new SqlConnection(_connectionString))
             {
+                var offerRepo = new OfferRepository();
                 DeleteUserCandyEntry(userCandyIdToDelete);
+                offerRepo.RemoveOffer(userCandyIdToDelete);
                 var sql = @"UPDATE [User]
                             SET AmountOfCandyEaten += 1
                             WHERE Id = @UserId";
@@ -226,9 +244,11 @@ namespace CandyMarket.Api.Repositories
             using (var db = new SqlConnection(_connectionString))
             {
                 var candyRepo = new CandyRepository();
+                var offerRepo = new OfferRepository();
                 var candyToDonate = candyRepo.GetCandyFromDatabase(userCandyIdToDonate);
                 var userToDonate = WhoToDonateTo(candyToDonate.Id, userIdWhoIsDonating);
                 DeleteUserCandyEntry(userCandyIdToDonate);
+                offerRepo.RemoveOffer(userCandyIdToDonate);
                 var sql = @"INSERT INTO [UserCandy]
                             ([UserId], [CandyId])
                             VALUES
@@ -256,10 +276,12 @@ namespace CandyMarket.Api.Repositories
         {
             using (var db = new SqlConnection(_connectionString))
             {
+                var offerRepo = new OfferRepository();
                 var sql = @"UPDATE [UserCandy]
                             SET IsUpForTrade = 0
                             WHERE [Id] = @userCandyId";
                 var parameters = new { userCandyId };
+                offerRepo.RemoveOffer(userCandyId);
                 return db.Execute(sql, parameters) == 1;
             }
         }
@@ -269,12 +291,15 @@ namespace CandyMarket.Api.Repositories
             using (var db = new SqlConnection(_connectionString))
             {
                 var candyRepo = new CandyRepository();
+                var offerRepo = new OfferRepository();
                 var userId1 = GetUserFromDatabase(userCandyId1);
                 var userId2 = GetUserFromDatabase(userCandyId2);
                 var candyId1 = candyRepo.GetCandyFromDatabase(userCandyId1);
                 var candyId2 = candyRepo.GetCandyFromDatabase(userCandyId2);
                 DeleteUserCandyEntry(userCandyId1);
                 DeleteUserCandyEntry(userCandyId2);
+                offerRepo.RemoveOffer(userCandyId1);
+                offerRepo.RemoveOffer(userCandyId2);
                 var sql = @"INSERT INTO [UserCandy]
                             ([Userid], [CandyId])
                             VALUES
