@@ -134,5 +134,17 @@ namespace CandyMarket.Api.Repositories
                 return db.Execute(sql, parameters) == 1;
             }
         }
+
+        public bool DeleteOffer(Guid offerId)
+        {
+            using (var db = new SqlConnection(_connectionString))
+            {
+                var sql = @"DELETE
+                            FROM [Offer]
+                            WHERE Offer.Id = @offerId";
+                var parameters = new { offerId };
+                return db.Execute(sql, parameters) == 1;
+            }
+        }
     }
 }

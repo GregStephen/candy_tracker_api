@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Candy from '../Candy/Candy';
+import OfferIn from '../OfferIn/OfferIn';
+import OfferOut from '../OfferOut/OfferOut';
 
 import './Home.scss';
 
@@ -25,6 +27,12 @@ unPutTheCandyUpForTrade = (userCandyId) => {
   const { candyNotUpForTrade } = this.props;
   candyNotUpForTrade(userCandyId);
 }
+
+offerCanceled = (offerId) => {
+  const { cancelTheOffer } = this.props;
+  cancelTheOffer(offerId);
+};
+
 componentDidMount() {
 
 }
@@ -41,6 +49,21 @@ render () {
     unPutTheCandyUpForTrade={ this.unPutTheCandyUpForTrade }
     />
   ));
+
+  const showUsersOffersOut = userObj.offersOut.map(offer => (
+    <OfferOut
+    key={ offer.id }
+    offer={ offer }
+    offerCanceled= { this.offerCanceled }
+    />
+  ));
+
+  const showUsersOffersIn = userObj.offersIn.map(offer => (
+    <OfferIn 
+    key={ offer.id }
+    offer= { offer }
+    />
+  ))
 
   return (
     <div className='Home container'>
@@ -59,13 +82,19 @@ render () {
             'You have eaten a lot of fucking candy.'}</p>
         </div>
       </div>
-    <div className='row'>
-      <div className='col-12 justify-content-around'>
-        <h3 className='col-12 col-md-8'> Here's your list of candy that you own!</h3>
-        <p className='col-12 col-md-8'>Amount of Candy Owned : {userObj.candyOwned.length}</p>
+      <div className='row'>
+        <div className='col-12 justify-content-around'>
+          <h3 className='col-12 col-md-8'> Here's your list of candy that you own!</h3>
+          <p className='col-12 col-md-8'>Amount of Candy Owned : {userObj.candyOwned.length}</p>
+        </div>
       </div>
-    </div>
-      <div className="row">
+      <div className="row userOffersOut">
+        { showUsersOffersOut }
+      </div>
+      <div className="row userOffersIn">
+        { showUsersOffersIn }
+      </div>
+      <div className="row userCandies">
         { showUsersCandy }
       </div>  
     </div>

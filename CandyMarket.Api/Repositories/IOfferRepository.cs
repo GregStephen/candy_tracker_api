@@ -11,5 +11,7 @@ namespace CandyMarket.Api.Repositories
     {
         IEnumerable<Offer> GetOffers();
         bool AddOffer(AddOfferDto newOffer);
+        bool RemoveOffer(Guid userCandyId);
+        bool DeleteOffer(Guid offerId);
     }
 }

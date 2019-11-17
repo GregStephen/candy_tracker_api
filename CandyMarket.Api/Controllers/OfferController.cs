@@ -35,5 +35,10 @@ namespace CandyMarket.Api.Controllers
                 return BadRequest();
             }
         }
+        [HttpDelete("{offerIdToDelete}")]
+        public void Delete(Guid offerIdToDelete)
+        {
+            _repo.DeleteOffer(offerIdToDelete);
+        }
     }
 }
