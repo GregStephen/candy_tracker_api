@@ -32,12 +32,14 @@ namespace CandyMarket.Api.Repositories
                     user.CandyOwned = candies;
                     var favoriteCandyName = candyRepo.FetchFavoriteCandyName(user);
                     user.FavoriteTypeOfCandyName = favoriteCandyName;
+                    user.OffersIn = new List<UsersOffersIn>();
+                    user.OffersOut = new List<UsersOffersOut>();
                     foreach (OwnedCandy ownedCandy in candies)
                     {
                         var offersOut = offerRepo.FetchUsersOffersOut(ownedCandy.UserCandyId);
-                        user.OffersOut = offersOut;
+                        user.OffersOut.AddRange(offersOut);
                         var offersIn = offerRepo.FetchUsersOffersIn(ownedCandy.UserCandyId);
-                        user.OffersIn = offersIn;
+                        user.OffersIn.AddRange(offersIn);
                     }
                 }
                 return users;
@@ -86,12 +88,14 @@ namespace CandyMarket.Api.Repositories
                 user.CandyOwned = candies;
                 var favoriteCandyName = candyRepo.FetchFavoriteCandyName(user);
                 user.FavoriteTypeOfCandyName = favoriteCandyName;
+                user.OffersIn = new List<UsersOffersIn>();
+                user.OffersOut = new List<UsersOffersOut>();
                 foreach (OwnedCandy ownedCandy in candies)
                 {
                     var offersOut = offerRepo.FetchUsersOffersOut(ownedCandy.UserCandyId);
-                    user.OffersOut = offersOut;
+                    user.OffersOut.AddRange(offersOut);
                     var offersIn = offerRepo.FetchUsersOffersIn(ownedCandy.UserCandyId);
-                    user.OffersIn = offersIn;
+                    user.OffersIn.AddRange(offersIn);
                 }
                 return user;
             }
@@ -159,12 +163,14 @@ namespace CandyMarket.Api.Repositories
                 userToReturn.CandyOwned = candies;
                 var favoriteCandyName = candyRepo.FetchFavoriteCandyName(userToReturn);
                 userToReturn.FavoriteTypeOfCandyName = favoriteCandyName;
+                userToReturn.OffersIn = new List<UsersOffersIn>();
+                userToReturn.OffersOut = new List<UsersOffersOut>();
                 foreach (OwnedCandy ownedCandy in candies)
                 {
                     var offersOut = offerRepo.FetchUsersOffersOut(ownedCandy.UserCandyId);
-                    userToReturn.OffersOut = offersOut;
+                    userToReturn.OffersOut.AddRange(offersOut);
                     var offersIn = offerRepo.FetchUsersOffersIn(ownedCandy.UserCandyId);
-                    userToReturn.OffersIn = offersIn;
+                    userToReturn.OffersIn.AddRange(offersIn);
                 }
                 return userToReturn;
             }
