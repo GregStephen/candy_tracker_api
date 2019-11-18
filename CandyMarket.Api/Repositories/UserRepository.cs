@@ -127,7 +127,7 @@ namespace CandyMarket.Api.Repositories
                 var sql = @"SELECT u.*
                             FROM [UserCandy] uc
                                 JOIN [User] u
-                                ON u.[Id] = uc.[Id]
+                                ON u.[Id] = uc.UserId
                             WHERE uc.[Id] = @userCandyId";
                 var parameters = new { userCandyId };
                 var userIdToReturn = db.QueryFirst<User>(sql, parameters);
@@ -298,21 +298,25 @@ namespace CandyMarket.Api.Repositories
             {
                 var candyRepo = new CandyRepository();
                 var offerRepo = new OfferRepository();
-                var userId1 = GetUserFromDatabase(userCandyId1);
-                var userId2 = GetUserFromDatabase(userCandyId2);
-                var candyId1 = candyRepo.GetCandyFromDatabase(userCandyId1);
-                var candyId2 = candyRepo.GetCandyFromDatabase(userCandyId2);
-                DeleteUserCandyEntry(userCandyId1);
-                DeleteUserCandyEntry(userCandyId2);
+                var user1 = GetUserFromDatabase(userCandyId1);
+                var user2 = GetUserFromDatabase(userCandyId2);
+                var candy1 = candyRepo.GetCandyFromDatabase(userCandyId1);
+                var candy2 = candyRepo.GetCandyFromDatabase(userCandyId2);
+                var userId1 = user1.Id;
+                var userId2 = user2.Id;
+                var candyId1 = candy1.Id;
+                var candyId2 = candy2.Id;
                 offerRepo.RemoveOffer(userCandyId1);
                 offerRepo.RemoveOffer(userCandyId2);
+                DeleteUserCandyEntry(userCandyId1);
+                DeleteUserCandyEntry(userCandyId2);
                 var sql = @"INSERT INTO [UserCandy]
                             ([Userid], [CandyId])
                             VALUES
                                 (@userId1, @candyId2),
                                 (@userId2, @candyId1)";
                 var parameters = new { userId1, userId2, candyId1, candyId2 };
-                return db.Execute(sql, parameters) == 1;
+                return db.Execute(sql, parameters) == 2;
             }
         }
     }

@@ -103,7 +103,7 @@ namespace CandyMarket.Api.Repositories
 		                            t2.[Name] as OfferedCandyType
                             FROM Offer o
 	                            JOIN UserCandy uc
-	                            ON o.Offered = uc.Id
+	                            ON o.Requested = uc.Id
 	                            JOIN Candy c
 	                            ON uc.CandyId = c.Id
 	                            JOIN [Type] t

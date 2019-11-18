@@ -33,9 +33,11 @@ offerCanceled = (offerId) => {
   cancelTheOffer(offerId);
 };
 
-componentDidMount() {
-
+offerApproved = (userCandyId1, userCandyId2) => {
+  const { approveTheOffer } = this.props;
+  approveTheOffer(userCandyId1, userCandyId2);
 }
+
 
 render () {
   const { userObj } = this.props;
@@ -62,6 +64,8 @@ render () {
     <OfferIn 
     key={ offer.id }
     offer= { offer }
+    offerCanceled= { this.offerCanceled }
+    offerApproved= { this.offerApproved }
     />
   ))
 
